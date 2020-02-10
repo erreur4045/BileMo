@@ -124,7 +124,7 @@ class AppFixtures extends Fixture
             ]
         ];
         
-        foreach ($suppliers as $value){
+        foreach ($suppliers as $value) {
             $supplier = new Supplier();
             $supplier->setName($value['name']);
             $supplier->setCountry($value['country']);
@@ -134,7 +134,7 @@ class AppFixtures extends Fixture
         $manager->flush();
         $allSupplier = $manager->getRepository(Supplier::class)->findAll();
         $nbSupp = count($allSupplier);
-        foreach ($specifications as $value){
+        foreach ($specifications as $value) {
             $specification = new Specification();
             $specification->setScreenDiagonal($value['screen_diagonal']);
             $specification->setScreenResolution($value['screen_resolution']);
@@ -149,20 +149,20 @@ class AppFixtures extends Fixture
         $allSpec = $manager->getRepository(Specification::class)->findAll();
         $nbSpec = count($allSpec);
 
-        foreach ($phones as $value){
+        foreach ($phones as $value) {
             $phone = new Phone();
             $phone->setName($value['name']);
             $phone->setWeight($value['weight']);
             $phone->setHeight($value['height']);
             $phone->setWidth($value['weight']);
             $phone->setDepth($value['depth']);
-            $phone->setSupplier($allSupplier[rand(0,$nbSupp-1)]);
-            $phone->setSpecification($allSpec[rand(0, $nbSpec-1)]);
+            $phone->setSupplier($allSupplier[rand(0, $nbSupp - 1)]);
+            $phone->setSpecification($allSpec[rand(0, $nbSpec - 1)]);
 
             $manager->persist($phone);
         }
 
-        foreach ($clients as $value){
+        foreach ($clients as $value) {
             $client = new Client();
             $client->setEmail($value['email']);
             $client->setPassword(password_hash($value['password'], PASSWORD_BCRYPT));
@@ -174,12 +174,12 @@ class AppFixtures extends Fixture
         $allClient = $manager->getRepository(Client::class)->findAll();
         $nbClient = count($allClient);
 
-        for($i=0; $i < 20; $i++){
+        for ($i = 0; $i < 20; $i++) {
                 $user = new EndUser();
                 $user->setEmail($faker->email);
                 $user->setFistName($faker->firstName);
                 $user->setLastName($faker->lastName);
-                $user->setClient($allClient[rand(0,$nbClient-1)]);
+                $user->setClient($allClient[rand(0, $nbClient - 1)]);
                 $manager->persist($user);
         }
         $manager->flush();
