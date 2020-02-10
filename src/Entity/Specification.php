@@ -22,7 +22,7 @@ class Specification
     private $screen_diagonal;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $screen_resolution;
 
@@ -113,11 +113,9 @@ class Specification
         return $this->screen_resolution;
     }
 
-    public function setScreenResolution(?int $screen_resolution): self
+    public function setScreenResolution(): ?string
     {
-        $this->screen_resolution = $screen_resolution;
-
-        return $this;
+        return $this->screen_resolution;
     }
 
     public function getTypeOfScreen(): ?string
