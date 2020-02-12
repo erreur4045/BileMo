@@ -73,36 +73,16 @@ class AppFixtures extends Fixture
 
         $specifications = [
             [
-                'screen_diagonal' => 5,
-                'screen_resolution' => '1235x54654',
                 'type_of_screen' => 'oled',
-                'processor' => 'i7 intel',
-                'ram' => '8',
-                'internal_memory' => '128',
             ],
             [
-                'screen_diagonal' => '30',
-                'screen_resolution' => '16546x545',
                 'type_of_screen' => 'lcd',
-                'processor' => 'i7 intel',
-                'ram' => '1',
-                'internal_memory' => '458',
             ],
             [
-                'screen_diagonal' => '12',
-                'screen_resolution' => '1080x720',
                 'type_of_screen' => 'oled',
-                'processor' => 'i7 intel',
-                'ram' => '3',
-                'internal_memory' => '56',
             ],
             [
-                'screen_diagonal' => 7,
-                'screen_resolution' => '1235x122',
                 'type_of_screen' => 'amoled',
-                'processor' => 'i7 intel',
-                'ram' => 15,
-                'internal_memory' => 2,
             ]
         ];
 
@@ -123,7 +103,11 @@ class AppFixtures extends Fixture
                 'firm' => 'boulanger',
             ]
         ];
-        
+
+        $networks = ['2G', '3G', '4G', '5G'];
+        $processors = ['i5','i7','i9','i3'];
+        $allOs = ['IOs', 'Android', 'WindowsPhone', 'Unix'];
+
         foreach ($suppliers as $value) {
             $supplier = new Supplier();
             $supplier->setName($value['name']);
@@ -136,12 +120,20 @@ class AppFixtures extends Fixture
         $nbSupp = count($allSupplier);
         foreach ($specifications as $value) {
             $specification = new Specification();
-            $specification->setScreenDiagonal($value['screen_diagonal']);
-            $specification->setScreenResolution($value['screen_resolution']);
-            $specification->setTypeOfScreen($value['type_of_screen']);
-            $specification->setProcessor($value['processor']);
-            $specification->setRam($value['ram']);
-            $specification->setInternalMemory($value['internal_memory']);
+            $specification->setScreendiagonal(rand(4, 8));
+            $specification->setScreenresolution('1080x720');
+            $specification->setProcessor($processors[array_rand($processors)]);
+            $specification->setRam(rand(1, 12));
+            $specification->setMemorycard(rand(0, 1));
+            $specification->setPhotosensor(rand(1, 12));
+            $specification->setFrontphotosensor(rand(1, 6));
+            $specification->setNetwork($networks[array_rand($networks)]);
+            $specification->setTypeofscreen($value['type_of_screen']);
+            $specification->setBatterycapacity(rand(2000, 6000));
+            $specification->setOperatingsystem($allOs[array_rand($allOs)]);
+            $specification->setNfc(rand(0, 1));
+            $specification->setDualsim(rand(0, 1));
+            $specification->setInternalmemory(rand(64, 128));
 
             $manager->persist($specification);
         }

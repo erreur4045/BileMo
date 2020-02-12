@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SpecificationRepository")
@@ -18,259 +19,347 @@ class Specification
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $screen_diagonal;
+    private $screendiagonal;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $screen_resolution;
+    private $screenresolution;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $type_of_screen;
+    private $typeofscreen;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("phone_details_route")
      */
     private $processor;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
     private $ram;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $internal_memory;
+    private $internalmemory;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $memory_card;
+    private $memorycard;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $photo_sensor;
+    private $photosensor;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $front_photo_sensor;
+    private $frontphotosensor;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $battery_capacity;
+    private $batterycapacity;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $operating_system;
+    private $operatingsystem;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("phone_details_route")
      */
     private $nfc;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("phone_details_route")
      */
-    private $dual_sim;
+    private $dualsim;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups("phone_details_route")
      */
     private $network;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups("phone_details_route")
      */
     private $other = [];
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getScreenDiagonal(): ?int
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->screen_diagonal;
+        $this->id = $id;
     }
 
-    public function setScreenDiagonal(?int $screen_diagonal): self
+    /**
+     * @return mixed
+     */
+    public function getScreendiagonal()
     {
-        $this->screen_diagonal = $screen_diagonal;
-
-        return $this;
+        return $this->screendiagonal;
     }
 
-    public function getScreenResolution(): ?int
+    /**
+     * @param mixed $screendiagonal
+     */
+    public function setScreendiagonal($screendiagonal): void
     {
-        return $this->screen_resolution;
+        $this->screendiagonal = $screendiagonal;
     }
 
-    public function setScreenResolution(): ?string
+    /**
+     * @return mixed
+     */
+    public function getScreenresolution()
     {
-        return $this->screen_resolution;
+        return $this->screenresolution;
     }
 
-    public function getTypeOfScreen(): ?string
+    /**
+     * @param mixed $screenresolution
+     */
+    public function setScreenresolution($screenresolution): void
     {
-        return $this->type_of_screen;
+        $this->screenresolution = $screenresolution;
     }
 
-    public function setTypeOfScreen(?string $type_of_screen): self
+    /**
+     * @return mixed
+     */
+    public function getTypeofscreen()
     {
-        $this->type_of_screen = $type_of_screen;
-
-        return $this;
+        return $this->typeofscreen;
     }
 
-    public function getProcessor(): ?string
+    /**
+     * @param mixed $typeofscreen
+     */
+    public function setTypeofscreen($typeofscreen): void
+    {
+        $this->typeofscreen = $typeofscreen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProcessor()
     {
         return $this->processor;
     }
 
-    public function setProcessor(?string $processor): self
+    /**
+     * @param mixed $processor
+     */
+    public function setProcessor($processor): void
     {
         $this->processor = $processor;
-
-        return $this;
     }
 
-    public function getRam(): ?int
+    /**
+     * @return mixed
+     */
+    public function getRam()
     {
         return $this->ram;
     }
 
-    public function setRam(?int $ram): self
+    /**
+     * @param mixed $ram
+     */
+    public function setRam($ram): void
     {
         $this->ram = $ram;
-
-        return $this;
     }
 
-    public function getInternalMemory(): ?int
+    /**
+     * @return mixed
+     */
+    public function getInternalmemory()
     {
-        return $this->internal_memory;
+        return $this->internalmemory;
     }
 
-    public function setInternalMemory(?int $internal_memory): self
+    /**
+     * @param mixed $internalmemory
+     */
+    public function setInternalmemory($internalmemory): void
     {
-        $this->internal_memory = $internal_memory;
-
-        return $this;
+        $this->internalmemory = $internalmemory;
     }
 
-    public function getMemoryCard(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getMemorycard()
     {
-        return $this->memory_card;
+        return $this->memorycard;
     }
 
-    public function setMemoryCard(?bool $memory_card): self
+    /**
+     * @param mixed $memorycard
+     */
+    public function setMemorycard($memorycard): void
     {
-        $this->memory_card = $memory_card;
-
-        return $this;
+        $this->memorycard = $memorycard;
     }
 
-    public function getPhotoSensor(): ?int
+    /**
+     * @return mixed
+     */
+    public function getPhotosensor()
     {
-        return $this->photo_sensor;
+        return $this->photosensor;
     }
 
-    public function setPhotoSensor(?int $photo_sensor): self
+    /**
+     * @param mixed $photosensor
+     */
+    public function setPhotosensor($photosensor): void
     {
-        $this->photo_sensor = $photo_sensor;
-
-        return $this;
+        $this->photosensor = $photosensor;
     }
 
-    public function getFrontPhotoSensor(): ?int
+    /**
+     * @return mixed
+     */
+    public function getFrontphotosensor()
     {
-        return $this->front_photo_sensor;
+        return $this->frontphotosensor;
     }
 
-    public function setFrontPhotoSensor(?int $front_photo_sensor): self
+    /**
+     * @param mixed $frontphotosensor
+     */
+    public function setFrontphotosensor($frontphotosensor): void
     {
-        $this->front_photo_sensor = $front_photo_sensor;
-
-        return $this;
+        $this->frontphotosensor = $frontphotosensor;
     }
 
-    public function getBatteryCapacity(): ?int
+    /**
+     * @return mixed
+     */
+    public function getBatterycapacity()
     {
-        return $this->battery_capacity;
+        return $this->batterycapacity;
     }
 
-    public function setBatteryCapacity(?int $battery_capacity): self
+    /**
+     * @param mixed $batterycapacity
+     */
+    public function setBatterycapacity($batterycapacity): void
     {
-        $this->battery_capacity = $battery_capacity;
-
-        return $this;
+        $this->batterycapacity = $batterycapacity;
     }
 
-    public function getOperatingSystem(): ?string
+    /**
+     * @return mixed
+     */
+    public function getOperatingsystem()
     {
-        return $this->operating_system;
+        return $this->operatingsystem;
     }
 
-    public function setOperatingSystem(?string $operating_system): self
+    /**
+     * @param mixed $operatingsystem
+     */
+    public function setOperatingsystem($operatingsystem): void
     {
-        $this->operating_system = $operating_system;
-
-        return $this;
+        $this->operatingsystem = $operatingsystem;
     }
 
-    public function getNfc(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getNfc()
     {
         return $this->nfc;
     }
 
-    public function setNfc(?bool $nfc): self
+    /**
+     * @param mixed $nfc
+     */
+    public function setNfc($nfc): void
     {
         $this->nfc = $nfc;
-
-        return $this;
     }
 
-    public function getDualSim(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getDualsim()
     {
-        return $this->dual_sim;
+        return $this->dualsim;
     }
 
-    public function setDualSim(?bool $dual_sim): self
+    /**
+     * @param mixed $dualsim
+     */
+    public function setDualsim($dualsim): void
     {
-        $this->dual_sim = $dual_sim;
-
-        return $this;
+        $this->dualsim = $dualsim;
     }
 
-    public function getNetwork(): ?string
+    /**
+     * @return mixed
+     */
+    public function getNetwork()
     {
         return $this->network;
     }
 
-    public function setNetwork(?string $network): self
+    /**
+     * @param mixed $network
+     */
+    public function setNetwork($network): void
     {
         $this->network = $network;
-
-        return $this;
     }
 
-    public function getOther(): ?array
+    /**
+     * @return array
+     */
+    public function getOther(): array
     {
         return $this->other;
     }
 
-    public function setOther(?array $other): self
+    /**
+     * @param array $other
+     */
+    public function setOther(array $other): void
     {
         $this->other = $other;
-
-        return $this;
     }
 }

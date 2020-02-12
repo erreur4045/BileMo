@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EndUserRepository")
@@ -13,21 +15,25 @@ class EndUser
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("list_clients")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("list_clients")
      */
-    private $last_name;
+    private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("list_clients")
      */
-    private $fist_name;
+    private $fistname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("list_clients")
      */
     private $email;
 
@@ -36,56 +42,87 @@ class EndUser
      */
     private $client;
 
-    public function getId(): ?int
+    public function __toString(): ?string
+    {
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getLastName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->last_name;
+        $this->id = $id;
     }
 
-    public function setLastName(string $last_name): self
+    /**
+     * @return mixed
+     */
+    public function getLastname()
     {
-        $this->last_name = $last_name;
-
-        return $this;
+        return $this->lastname;
     }
 
-    public function getFistName(): ?string
+    /**
+     * @param mixed $lastname
+     */
+    public function setLastname($lastname): void
     {
-        return $this->fist_name;
+        $this->lastname = $lastname;
     }
 
-    public function setFistName(string $fist_name): self
+    /**
+     * @return mixed
+     */
+    public function getFistname()
     {
-        $this->fist_name = $fist_name;
-
-        return $this;
+        return $this->fistname;
     }
 
-    public function getEmail(): ?string
+    /**
+     * @param mixed $fistname
+     */
+    public function setFistname($fistname): void
+    {
+        $this->fistname = $fistname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
-    public function getClient(): ?Client
+    /**
+     * @return mixed
+     */
+    public function getClient()
     {
         return $this->client;
     }
 
-    public function setClient(?Client $client): self
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client): void
     {
         $this->client = $client;
-
-        return $this;
     }
 }
