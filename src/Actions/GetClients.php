@@ -26,11 +26,11 @@ class GetClients
 {
     /** @var ClientRepository */
     private $clientsRepository;
-/** @var SerializerInterface */
-    private $serilizer;
-/** @var ResponderJson */
-    private $responder;
-/**
+    /** @var SerializerInterface */
+        private $serilizer;
+    /** @var ResponderJson */
+        private $responder;
+    /**
      * GetClients constructor.
      * @param ClientRepository $clientsRepository
      * @param SerializerInterface $serilizer

@@ -17,13 +17,13 @@ class Client
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $email;
 
@@ -34,7 +34,7 @@ class Client
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $firm;
 
@@ -45,7 +45,7 @@ class Client
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\EndUser", mappedBy="client")
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $enduser;
 

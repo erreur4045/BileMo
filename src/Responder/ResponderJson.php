@@ -12,11 +12,15 @@
 namespace App\Responder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResponderJson
 {
-    public function __invoke($data, $status, $header)
+    public function __invoke($data, $status, $header, $cachable = null)
     {
+        //if ($cachable = true){
+        //    $response->setPublic()->setSharedMaxAge(3600);
+        //}
         return new JsonResponse($data, $status, $header);
     }
 }

@@ -15,30 +15,31 @@ class EndUser
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $fistname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list_clients")
+     * @Groups({"list_clients", "user_details_route"})
      */
     private $email;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="enduser")
+     * @Groups("list_clients")
      */
     private $client;
 

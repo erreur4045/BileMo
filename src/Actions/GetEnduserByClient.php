@@ -2,32 +2,33 @@
 
 /**
  * Create by maxime
- * Date 2/11/2020
- * Time 2:41 PM
+ * Date 2/12/2020
+ * Time 1:33 AM
  * Project :  projet7
  * IDE : PhpStorm
- * FileName : GetPhoneWithDetails.php as GetPhoneWithDetails
+ * FileName : GetEnduserByClient.php as GetEnduserByClient
  */
 
 namespace App\Actions;
 
-use App\Repository\PhoneRepository;
+use App\Repository\ClientRepository;
 use App\Repository\SupplierRepository;
 use App\Responder\ResponderJson;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class GetPhones
+ * Class GetEnduserByClient
  * @package App\Actions
- * @Route(name="get_phone", path="/api/phones/{id}", methods={"GET"})
+ * @Route(name="get_endusers", path="/api/clients/{id}", methods={"GET"})
  */
-class GetPhoneWithDetails
+class GetEnduserByClient
 {
-    /** @var PhoneRepository */
-    private $phoneRepository;
+    /** @var ClientRepository */
+    private $clientRepository;
     /** @var SerializerInterface */
         private $serializer;
     /** @var SupplierRepository */
@@ -35,30 +36,33 @@ class GetPhoneWithDetails
     /** @var ResponderJson */
         private $responder;
     /**
-     * GetPhoneWithDetails constructor.
-     * @param PhoneRepository $phoneRepository
+     * GetEnduserByClient constructor.
+     * @param ClientRepository $clientRepository
      * @param SerializerInterface $serializer
      * @param SupplierRepository $supplierRepository
      * @param ResponderJson $responder
      */
     public function __construct(
-        PhoneRepository $phoneRepository,
+        ClientRepository $clientRepository,
         SerializerInterface $serializer,
         SupplierRepository $supplierRepository,
         ResponderJson $responder
     ) {
-        $this->phoneRepository = $phoneRepository;
+        $this->clientRepository = $clientRepository;
         $this->serializer = $serializer;
         $this->supplierRepository = $supplierRepository;
         $this->responder = $responder;
     }
 
-
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $phone = $this->phoneRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        $phoneSerilized = $this->serializer->normalize($phone, 'json', ['groups' => 'phone_details_route']);
-        return $responder($phoneSerilized, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        $endClient = $this->clientRepository->findOneBy(['id' => $request->attributes->get('id')]);
+        $endClientsSerialised = $this->serializer->normalize($endClient, 'json', ['groups' => 'user_details_route']);
+        return $responder($endClientsSerialised, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }
