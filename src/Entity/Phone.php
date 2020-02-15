@@ -4,23 +4,23 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhoneRepository")
  */
-class Phone implements \JsonSerializable
+class Phone
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("phone_list")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("phone_details_route")
+     * @Groups({"phone_details_route", "phone_list"})
      */
     private $name;
 
@@ -47,6 +47,12 @@ class Phone implements \JsonSerializable
      * @Groups({"phone_details_route", "phone_list"})
      */
     private $depth;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("phone_list")
+     */
+    private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Supplier", inversedBy="phones")
@@ -149,25 +155,15 @@ class Phone implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize()
+    public function getPrice(): ?int
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'weight' => $this->weight,
-            'height' => $this->height,
-            'width' => $this->width,
-            'depth' => $this->depth,
-           '_href'  => [
-               'self' => sprintf('/api/phones/%s', $this->id->toString())
-            ]
-        ];
+        return $this->price;
+    }
+
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
     }
 }

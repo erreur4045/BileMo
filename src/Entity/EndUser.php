@@ -4,42 +4,40 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EndUserRepository")
  */
-class EndUser
+class EndUser implements \JsonSerializable
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"list_clients", "user_details_route"})
+     * @Groups({"list_users", "user_details_route"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_clients", "user_details_route"})
+     * @Groups("user_details_route")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_clients", "user_details_route"})
+     * @Groups("user_details_route")
      */
     private $fistname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_clients", "user_details_route"})
+     * @Groups({"list_users", "user_details_route"})
      */
     private $email;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="enduser")
-     * @Groups("list_clients")
      */
     private $client;
 
@@ -125,5 +123,43 @@ class EndUser
     public function setClient($client): void
     {
         $this->client = $client;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+
+        if ($_SERVER['REQUEST_URI'] == '/api/users') {
+            $data = [
+                'id' => $this->id,
+                'email' => $this->email,
+                '_href'  => [
+                    'self' => $_SERVER['REQUEST_URI'],
+                    'posts' => '/api/users',
+                    'delete' => sprintf('/api/users/%s', $this->id),
+                    'details' => sprintf('/api/users/%s', $this->id)
+                ]
+            ];
+        } else {
+            $data = [
+                'id' => $this->id,
+                'email' => $this->email,
+                'lastname' => $this->lastname,
+                'fistname' => $this->fistname,
+                '_href'  => [
+                    'self' => $_SERVER['REQUEST_URI'],
+                    'posts' => '/api/users',
+                    'delete' => sprintf('/api/users/%s', $this->id)
+                ]
+            ];
+        }
+
+        return $data;
     }
 }

@@ -53,12 +53,11 @@ class GetPhoneWithDetails
         $this->responder = $responder;
     }
 
-
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
         $phone = $this->phoneRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        $phoneSerilized = $this->serializer->normalize($phone, 'json', ['groups' => 'phone_details_route']);
-        return $responder($phoneSerilized, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        $phonesNormalized = $this->serializer->normalize($phone, 'json', ['groups' => 'phone_details_route']);
+        return $responder($phonesNormalized);
     }
 }

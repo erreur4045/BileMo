@@ -55,12 +55,11 @@ class PostEnduser
         $this->em = $em;
     }
 
-
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
         $client = $this->clientRepository->findOneBy(['id' => $request->attributes->get('id')]);
-/** @var EndUserInput $endUserUnserialised */
+        /** @var EndUserInput $endUserUnserialised */
         $endUserUnserialised = $this->serializer->deserialize($request->getContent(), EndUser::class, 'json');
         $endUserUnserialised->setClient($client);
         $this->em->persist($endUserUnserialised);

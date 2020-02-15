@@ -23,9 +23,6 @@ services:
         resource: '../src/Actions'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    get_set_method_normalizer:
-        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-        public: false
-        tags: [serializer.normalizer]
+#   App\Actions\Domain\FormatData\CustomNormaliser:
+#       public: false
+#       tags: [serializer.normalizer]

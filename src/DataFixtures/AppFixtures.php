@@ -57,17 +57,17 @@ class AppFixtures extends Fixture
 
         $clients = [
             [
-                'email' => 'darty@darty.com',
+                'username' => 'darty',
                 'password' => 'testpass',
                 'firm' => 'darty',
             ],
             [
-                'email' => 'fnac@fnac.com',
+                'username' => 'fnac',
                 'password' => 'testpass',
                 'firm' => 'fnac',
             ],
             [
-                'email' => 'boulanger@boulanger.com',
+                'username' => 'boulanger',
                 'password' => 'testpass',
                 'firm' => 'boulanger',
             ]
@@ -114,11 +114,11 @@ class AppFixtures extends Fixture
         foreach ($phones as $value) {
             $phone = new Phone();
             $phone->setName($value['name']);
-            $phone->setWeight(rand(50,500));
-            $phone->setHeight(rand(100,500));
-            $phone->setWidth(rand(100,500));
-            $phone->setDepth(rand(5,30));
-            $phone->setPrice(rand(100,500));
+            $phone->setWeight(rand(50, 500));
+            $phone->setHeight(rand(100, 500));
+            $phone->setWidth(rand(100, 500));
+            $phone->setDepth(rand(5, 30));
+            $phone->setPrice(rand(100, 500));
             $phone->setSupplier($allSupplier[rand(0, $nbSupp - 1)]);
             $phone->setSpecification($allSpec[rand(0, $nbSpec - 1)]);
 
@@ -127,10 +127,9 @@ class AppFixtures extends Fixture
 
         foreach ($clients as $value) {
             $client = new Client();
-            $client->setEmail($value['email']);
+            $client->setUsername($value['username']);
             $client->setPassword(password_hash($value['password'], PASSWORD_BCRYPT));
             $client->setFirm($value['firm']);
-
             $manager->persist($client);
         }
         $manager->flush();

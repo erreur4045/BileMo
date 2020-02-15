@@ -8,11 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
  * @UniqueEntity("username")
  */
-class Client implements UserInterface
+class Client implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -40,7 +41,7 @@ class Client implements UserInterface
     private $firm;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="json", nullable=true)
      */
     private $roles;
 
@@ -72,7 +73,7 @@ class Client implements UserInterface
 
     public function setUsername(string $username): self
     {
-        $this->username = $this->username;
+        $this->username = $username;
 
         return $this;
     }
@@ -175,5 +176,17 @@ class Client implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        // TODO: Implement jsonSerialize() method.
     }
 }

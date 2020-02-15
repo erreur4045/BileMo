@@ -16,7 +16,7 @@ use App\Entity\Client;
 class EndUserInput
 {
     /** @var string */
-    private $lastname;
+        private $lastname;
     /** @var string */
         private $firstname;
     /** @var string */
