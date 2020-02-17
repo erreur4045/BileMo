@@ -12,7 +12,6 @@
 namespace App\Actions;
 
 use App\Entity\EndUser;
-use App\Entity\Inputs\EndUserInput;
 use App\Repository\ClientRepository;
 use App\Responder\ResponderJson;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class PostEnduser
  * @package App\Actions
- * @Route(name="post_enduser", path="api/clients/{id}/enduser", methods={"POST"})
+ * @Route(name="post_user", path="api/users", methods={"POST"})
  */
 class PostEnduser
 {
@@ -59,7 +58,7 @@ class PostEnduser
     {
         $responder = $this->responder;
         $client = $this->clientRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        /** @var EndUserInput $endUserUnserialised */
+        /** @var EndUser $endUserUnserialised */
         $endUserUnserialised = $this->serializer->deserialize($request->getContent(), EndUser::class, 'json');
         $endUserUnserialised->setClient($client);
         $this->em->persist($endUserUnserialised);
