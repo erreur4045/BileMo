@@ -1,9 +1,460 @@
 nelmio_api_doc:
-    documentation:
-        info:
-            title: My App
-            description: This is an awesome app!
-            version: 1.0.0
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+    documentation:
+        info:
+            title: BileMo API Documentation
+            description: API Projet 7
+            version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: 'Value: Bearer {jwt}'
+                name: Authorization
+                in: header
+
+        paths:
+#########################################
+################ General ################
+#########################################
+            /api/doc.json:
+                get:
+                    summary: Return documentation on json format
+                    description: "Return documentation"
+                    tags:
+                        - General
+                    responses:
+                        200:
+                            description: 'Success'
+                            content:
+                                application/json:
+            /api/login_check:
+                post:
+                    summary: Allows to retrieve a valid token
+                    tags:
+                        - General
+                    description: "This api allows to login on platform, and return a valid token"
+                    parameters:
+                        - in: "body"
+                          name: "body"
+                          schema:
+                            properties:
+                                username:
+                                    type: "string"
+                                    description: "Yours Username"
+                                    example: "Darty"
+                                password:
+                                    type: "string"
+                                    description: "Yours Password"
+                                    example: "123456"
+                    responses:
+                        200:
+                            description: 'Success'
+                            content:
+                                application/json:
+                            examples:
+                                    value: >-
+                                        {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODE4ODI0MzUsImV4cCI6MTYzMTg4MjQzNSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZGFydHkifQ._JenTzrcQl8Wg2hNjZXyuxNbRhkN-I47amJcGEUcmxVpz6jGAbfPgmK6OdciO-fH2NI6dUt4uf0VxZGmcvbjXnPZiSOr-Z1FR5XeC0-siW-Govu4IJHtQd_6VT7XLZDOv9PTlN_gTU_UDC-r4JDMm6-xOoVX46eyT_IGUtCtmZDcv_bENul80Xs2C70MsNi7ETjz9-gp_j1HAgEKU62mX6uisKPE-QPqUkBACw1jDLE9yUVHjlkmYga-vhZ8bpv0UrwJymdEYjT38kkdJuDZ1wcWVovst5dpB820hK8HvRGp2_Yo642g7Bhvk-v-QDxZz52BLHfG4NitmhzKeWzyAWAlESy4VqwOeImY7ummvmg2nS5QJXQgJ1YpnYKazebHsWB98gCGHjLGj2-5ewI15wokz6MaQejQWpTmTsduEWqxxhwgmvkPtNAMfDtarBkYWXC34cvCk3jKuVHrUxli0VcBRHYEbh6bzasoDhUUQSgoI8a2VI767g9l4SHhT66aiZpA9CTOptB0RPN4B_UqWqKOdD509JBhDsHqP1TYjfASji9oMQ6hDs66L1_LAsJiJfTTObK-V74K2vMhF7uVIsUcK0Jx8RTGC5F4Q4ibC02NXWxq6G-yWLSKEa0wj_TpoBE0Jp2IG4CaCq2aoVvos3YAfKFJR-atY4WZNTNbs3A"}
+                        400:
+                            description: 'Bad Request'
+                            content:
+                                application/json:
+                            examples:
+                                value: >-
+                                    {"type":"https:\/\/tools.ietf.org\/html\/rfc2616#section-10","title":"An error occurred","status":400,"detail":"Bad Request"}
+                        401:
+                            description: 'Unauthorized'
+                            content:
+                                application/json:
+                            examples:
+                                value: >-
+                                    {"code":401,"message":"Invalid credentials."}
+                        403:
+                            description: 'Forbidden'
+                        404:
+                            description: 'Not Found'
+                        405:
+                            description: 'Method Not Allowed'
+########################################
+################ Phones ################
+########################################
+            /api/phones:
+                get:
+                    security:
+                        -   Bearer: []
+                    summary: Return all phones
+                    tags:
+                        - About Phones
+                    description: Auto generated using Swagger Inspector
+                    responses:
+                        200:
+                            description: 'Success: Return list of all phones'
+                            content:
+                                application/json:
+                            schema:
+                                $ref: "#/definitions/Phone"
+                                examples:
+                                    '0':
+                                        value: >-
+                                            [{"name":"P8","weight":55,"height":212,"width":314,"depth":28,"supplier":{"id":228,"name":"huawei","country":"chine"}}]
+                        400:
+                            description: 'Bad Request'
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                        403:
+                            description: 'Forbidden'
+                        404:
+                            description: 'Not Found'
+                        405:
+                            description: 'Method Not Allowed'
+
+            /api/phones/{id}:
+                get:
+                    security:
+                        - Bearer: []
+                    tags:
+                        - About Phones
+                    summary: "Find phone by ID"
+                    description: "Returns a single phone"
+                    operationId: "getPhoneById"
+                    produces:
+                        - "application/json"
+                    parameters:
+                        - name: "id"
+                          in: "path"
+                          description: "ID of phone to return"
+                          required: true
+                          type: "integer"
+                    responses:
+                        200:
+                            description: "successful operation"
+                            content:
+                                application/json:
+                            schema:
+                                $ref: "#/definitions/Phone"
+                                examples:
+                                    '0':
+                                        value: >-
+                                            [{"name":"P8","weight":115,"height":192,"width":401,"depth":30,"supplier":{"id":281,"name":"honor","country":"chine"},"specification":{"screendiagonal":4,"screenresolution":"1080x720","typeofscreen":"cathode","processor":"i9","ram":2,"internalmemory":111,"memorycard":true,"photosensor":4,"frontphotosensor":4,"batterycapacity":2711,"operatingsystem":"WindowsPhone","nfc":true,"dualsim":false,"network":"5G","other":[]},"links":{"self":"\/api\/phones\/89","list":"\/api\/phones"}}]
+                        400:
+                            description: "Bad Request"
+                        404:
+                            description: "Phone not found"
+#######################################
+################ Users ################
+#######################################
+            /api/users:
+                get:
+                    security:
+                        -   Bearer: []
+                    summary: "Allows you to retrieve all users."
+                    tags:
+                        - About Users
+                    description: "Allows you to retrieve all users."
+                    responses:
+                        200:
+                            description: "Success: Return list of all users"
+                            content:
+                                application/json:
+                            schema:
+                                type: "object"
+                                ####demander comment le sortir de model####
+                                $ref: "#/definitions/Users"
+                        400:
+                            description: 'Bad Request'
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                post:
+                    security:
+                        -   Bearer: []
+                    summary: "Allows you to post a new user."
+                    tags:
+                        - About Users
+                    description: "Allows you to post a new user."
+                    parameters:
+                        - in: "body"
+                          name: "body"
+                          schema:
+                                properties:
+                                    lastname:
+                                        type: "string"
+                                        description: "The lastname of new user"
+                                        example: "Dudu"
+                                    fistname:
+                                        type: "string"
+                                        description: "The firstname of new user"
+                                        example: "Pierre"
+                                    email:
+                                        type: "string"
+                                        description: "The email of new user"
+                                        example: "pierre.dupont@localhost.com"
+                    responses:
+                        201:
+                            description: "Success"
+                            content:
+                                application/json:
+                            schema:
+                                example: >-
+                                    {}
+            /api/users/{id}:
+                get:
+                    security:
+                        -   Bearer: []
+                    summary: "Allows you to retrieve a single user."
+                    tags:
+                        - About Users
+                    description: "Allows you to retrieve a single user."
+                    responses:
+                        200:
+                            description: "Success"
+                            content:
+                                application/json:
+                            schema:
+                                type: "object"
+                                $ref: "#/definitions/User"
+                delete:
+                    security:
+                        -   Bearer: []
+                    summary: "Allows you to delete a user."
+                    tags:
+                        - About Users
+                    description: "Allows you to delete a user."
+                    responses:
+                        204:
+                            description: "User was deleted successfully."
+#########################################
+################ Definitions ############
+#########################################
+        definitions:
+            Users:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "User id"
+                        example: 15
+                    email:
+                        type: "string"
+                        description: "User email value"
+                        example: "jmarques@hubert.com"
+                    _href:
+                        type: "json"
+                        description: "hypermedia"
+                        example: {"self":"\/api\/users","posts":"\/api\/users","delete":"\/api\/users\/15","details":"\/api\/users\/15"}
+            User:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "User id"
+                        example: 15
+                    email:
+                        type: "string"
+                        description: "User email value"
+                        example: "jmarques@hubert.com"
+                    lastname:
+                        type: "string"
+                        description: "Lastname of user"
+                        example: "Jean-Luc"
+                    fistname:
+                        type: "string"
+                        description: "Firstname of user"
+                        example: "Dudu"
+                    _href:
+                        type: "json"
+                        description: "hypermedia"
+                        example: {"self":"\/api\/users\/15","posts":"\/api\/users","delete":"\/api\/users\/15"}
+            Phone:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "id of Phone"
+                        example: 89
+                    name:
+                        type: "string"
+                        description: "Phone commercial name"
+                        example: "P8"
+                    weight:
+                        type: "integer"
+                        description: "Phone weight in grams"
+                        example: 120
+                    height:
+                        type: "integer"
+                        description: "Phone height in millimeter"
+                        example: 120
+                    width:
+                        type: "integer"
+                        description: "Phone width in millimeter"
+                        example: 180
+                    depth:
+                        type: "integer"
+                        description: "Phone depth millimeter"
+                        example: 4
+                    price:
+                        type: "integer"
+                        description: "Phone price in euro"
+                        example: 899
+                    supplier:
+                        $ref: "#/definitions/Supplier"
+                    specification:
+                        $ref: "#/definitions/Specification"
+            Supplier:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "Id of supplier"
+                        example: 24
+                    name:
+                        type: "string"
+                        description: "The name of the company"
+                        example: "honor"
+                    country:
+                        type: "string"
+                        description: "The country of supplier"
+                        example: "china"
+            Specification:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "Specification id"
+                        example: 2
+                    screendiagonal:
+                        type: "integer"
+                        description: "Phone screen size in inches"
+                        example: 7
+                    screenresolution:
+                        type: "string"
+                        description: "Phone resolution"
+                        example: "1080px x 720px"
+                    typeofscreen:
+                        type: "string"
+                        description: "Display phone technology"
+                        example: "Oled"
+                    processor:
+                        type: "string"
+                        description: "Phone processor"
+                        example: "Snapdragon 845"
+                    ram:
+                        type: "integer"
+                        description: "Phone ram in Go"
+                        example: 6
+                    internalmemory:
+                        type: "integer"
+                        description: "Phone memory intern in Go"
+                        example: 128
+                    memorycard:
+                        type: "boolean"
+                        description: "The phone has a memory card capability"
+                        example: 1
+                    photosensor:
+                        type: "integer"
+                        description: "Resolution of the back camera of the phone in Mega px"
+                        example: 12
+                    frontphotosensor:
+                        type: "integer"
+                        description: "Resolution of the front camera of the phone in Mega px"
+                        example: 8
+                    batterycapacity:
+                        type: "integer"
+                        description: "Battery capacity of the phone in mAh"
+                        example: 4000
+                    operatingsystem:
+                        type: "string"
+                        description: "Os of the phone"
+                        example: "Android"
+                    nfc:
+                        type: "boolean"
+                        description: "The phone has NFC"
+                        example: 0
+                    dualsim:
+                        type: "boolean"
+                        description: "The phone has dualsim capability"
+                        example: 1
+                    network:
+                        type: "string"
+                        description: "Phone network"
+                        example: "4G"
+                    other:
+                        type: "json"
+                        description: "All other specifications you need in Json format"
+                        example: >-
+                            [{"name":"P8","weight":115}]
+            Client:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "Client id"
+                        example: 24
+                    username:
+                        type: "string"
+                        description: "Client name"
+                        example: "Darty"
+                    password:
+                        type: "string"
+                        description: "Client password"
+                    firm:
+                        type: "string"
+                        description: "Name of company"
+                        example: "Darty inc."
+            ClientLogin:
+                type: "array"
+                properties:
+                    username:
+                        type: "string"
+                        description: "Yours Username"
+                        example: "Darty"
+                    password:
+                        type: "string"
+                        description: "Yours Password"
+                        example: "123456"
+            EndUser:
+                type: "object"
+                properties:
+                    id:
+                        type: "integer"
+                        description: "EndUser id"
+                        example: 125
+                    lastname:
+                        type: "string"
+                        description: "Lastname of user"
+                        example: "Jean-Luc"
+                    fistname:
+                        type: "string"
+                        description: "Firstname of user"
+                        example: "Dudu"
+                    email:
+                        type: "string"
+                        description: "Email of user"
+                        example: "jean-luc.dupont@localhost.com"
+                    client:
+                        $ref: "#/definitions/Client"
+        components:
+        links:
+            Users:
+            # returns array of '#/components/schemas/repository'
+                operationId: getId
+                parameters:
+                    id: $response.body#/id
+            returnformat:
+                getUsers:
+                    type: "object"
+                    properties:
+                        id:
+                            type: "integer"
+                            description: "User id"
+                            example: 25
+                        email:
+                            type: "string"
+                            description: "User email value"
+                            example: "jmarques@hubert.com"
+
+            links:
+                servername:
+                    type: "string"
+        servers:
+            - url: https://api/

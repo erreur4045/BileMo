@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class DeleteEndUser
  * @package App\Actions
- * @Route(name="delete_endusers", path="/api/enduser/{id}", methods={"DELETE"})
+ * @Route(name="delete_users", path="/api/users/{id}", methods={"DELETE"})
  */
 class DeleteEndUser
 {

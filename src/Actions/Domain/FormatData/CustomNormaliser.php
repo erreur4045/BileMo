@@ -66,11 +66,11 @@ class CustomNormaliser implements ContextAwareNormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         $data = $this->normalizer->normalize($object, $format, $context);
-        $data['href']['self'] = $_SERVER['REQUEST_URI'];
-        if ($data['href']['self'] != '/api/phones/' . $object->getId()) {
-            $data['href']['details'] = '/api/phones/' . $object->getId();
+        $data['links']['self'] = $_SERVER['REQUEST_URI'];
+        if ($data['links']['self'] != '/api/phones/' . $object->getId()) {
+            $data['links']['details'] = '/api/phones/' . $object->getId();
         } else {
-            $data['href']['list'] = $this->router->generate('get_phones', [], UrlGeneratorInterface::ABSOLUTE_PATH);
+            $data['links']['list'] = $this->router->generate('get_phones', [], UrlGeneratorInterface::ABSOLUTE_PATH);
         }
         return $data;
     }
