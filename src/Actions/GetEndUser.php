@@ -6,13 +6,13 @@
  * Time 1:33 AM
  * Project :  projet7
  * IDE : PhpStorm
- * FileName : GetEnduserByClient.php as GetEnduserByClient
+ * FileName : GetEndUser.php as GetEndUser
  */
 
 namespace App\Actions;
 
 use App\Repository\ClientRepository;
-use App\Repository\SupplierRepository;
+use App\Repository\EndUserRepository;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,34 +23,31 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class GetEnduserByClient
  * @package App\Actions
- * @Route(name="get_endusers", path="/api/clients/{id}", methods={"GET"})
+ * @Route(name="get_user", path="/api/users/{id}", methods={"GET"})
  */
-class GetEnduserByClient
+class GetEndUser
 {
-    /** @var ClientRepository */
-    private $clientRepository;
     /** @var SerializerInterface */
         private $serializer;
-    /** @var SupplierRepository */
-        private $supplierRepository;
+    /** @var EndUserRepository */
+        private $enduserRepository;
     /** @var ResponderJson */
         private $responder;
+
     /**
      * GetEnduserByClient constructor.
      * @param ClientRepository $clientRepository
      * @param SerializerInterface $serializer
-     * @param SupplierRepository $supplierRepository
+     * @param EndUserRepository $enduserRepository
      * @param ResponderJson $responder
      */
     public function __construct(
-        ClientRepository $clientRepository,
         SerializerInterface $serializer,
-        SupplierRepository $supplierRepository,
+        EndUserRepository $enduserRepository,
         ResponderJson $responder
     ) {
-        $this->clientRepository = $clientRepository;
         $this->serializer = $serializer;
-        $this->supplierRepository = $supplierRepository;
+        $this->enduserRepository = $enduserRepository;
         $this->responder = $responder;
     }
 
@@ -61,7 +58,7 @@ class GetEnduserByClient
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $endClient = $this->clientRepository->findOneBy(['id' => $request->attributes->get('id')]);
+        $endClient = $this->enduserRepository->findOneBy(['id' => $request->attributes->get('id')]);
         $endClientsSerialised = $this->serializer->normalize($endClient, 'json', ['groups' => 'user_details_route']);
         return $responder($endClientsSerialised, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }

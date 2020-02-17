@@ -43,67 +43,37 @@ class AppFixtures extends Fixture
         $phones = [
             [
                 'name' => 'P8',
-                'weight' => '250',
-                'height' => '100',
-                'width' => '100',
-                'depth' => '12',
             ],
             [
                 'name' => 'SE8',
-                'weight' => '50',
-                'height' => '60',
-                'width' => '12',
-                'depth' => '123',
             ],
             [
                 'name' => 'iphone45',
-                'weight' => '6',
-                'height' => '2',
-                'width' => '1',
-                'depth' => '1',
             ],
             [
                 'name' => '3310',
-                'weight' => '6000',
-                'height' => '120',
-                'width' => '210',
-                'depth' => '45',
             ],
-        ];
-
-        $specifications = [
-            [
-                'type_of_screen' => 'oled',
-            ],
-            [
-                'type_of_screen' => 'lcd',
-            ],
-            [
-                'type_of_screen' => 'oled',
-            ],
-            [
-                'type_of_screen' => 'amoled',
-            ]
         ];
 
         $clients = [
             [
-                'email' => 'darty@darty.com',
+                'username' => 'darty',
                 'password' => 'testpass',
                 'firm' => 'darty',
             ],
             [
-                'email' => 'fnac@fnac.com',
+                'username' => 'fnac',
                 'password' => 'testpass',
                 'firm' => 'fnac',
             ],
             [
-                'email' => 'boulanger@boulanger.com',
+                'username' => 'boulanger',
                 'password' => 'testpass',
                 'firm' => 'boulanger',
             ]
         ];
 
+        $specifications = ['oled', 'lcd', 'cathode','amoled'];
         $networks = ['2G', '3G', '4G', '5G'];
         $processors = ['i5','i7','i9','i3'];
         $allOs = ['IOs', 'Android', 'WindowsPhone', 'Unix'];
@@ -128,7 +98,7 @@ class AppFixtures extends Fixture
             $specification->setPhotosensor(rand(1, 12));
             $specification->setFrontphotosensor(rand(1, 6));
             $specification->setNetwork($networks[array_rand($networks)]);
-            $specification->setTypeofscreen($value['type_of_screen']);
+            $specification->setTypeofscreen($value);
             $specification->setBatterycapacity(rand(2000, 6000));
             $specification->setOperatingsystem($allOs[array_rand($allOs)]);
             $specification->setNfc(rand(0, 1));
@@ -144,10 +114,11 @@ class AppFixtures extends Fixture
         foreach ($phones as $value) {
             $phone = new Phone();
             $phone->setName($value['name']);
-            $phone->setWeight($value['weight']);
-            $phone->setHeight($value['height']);
-            $phone->setWidth($value['weight']);
-            $phone->setDepth($value['depth']);
+            $phone->setWeight(rand(50, 500));
+            $phone->setHeight(rand(100, 500));
+            $phone->setWidth(rand(100, 500));
+            $phone->setDepth(rand(5, 30));
+            $phone->setPrice(rand(100, 500));
             $phone->setSupplier($allSupplier[rand(0, $nbSupp - 1)]);
             $phone->setSpecification($allSpec[rand(0, $nbSpec - 1)]);
 
@@ -156,10 +127,9 @@ class AppFixtures extends Fixture
 
         foreach ($clients as $value) {
             $client = new Client();
-            $client->setEmail($value['email']);
+            $client->setUsername($value['username']);
             $client->setPassword(password_hash($value['password'], PASSWORD_BCRYPT));
             $client->setFirm($value['firm']);
-
             $manager->persist($client);
         }
         $manager->flush();

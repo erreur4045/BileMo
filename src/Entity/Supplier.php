@@ -16,7 +16,7 @@ class Supplier
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"phone_details_route", "phone_list"})
+     * @Groups("phone_details_route")
      */
     private $id;
 
