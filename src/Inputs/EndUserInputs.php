@@ -30,11 +30,6 @@ class EndUserInputs
      * @Assert\NotBlank()
      */
     private $email;
-    /**
-     * @var Client|null
-     * @Assert\NotBlank()
-     */
-    private $client;
 
     /**
      * @return string|null
@@ -83,23 +78,4 @@ class EndUserInputs
     {
         $this->email = $email;
     }
-
-    /**
-     * @return Client|null
-     */
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    /**
-     * @param Client|null $client
-     */
-    public function setClient(?Client $client): void
-    {
-        $this->client = $client;
-    }
-
-
-
 }

@@ -73,7 +73,6 @@ class AddEndUserResolver
         /** @var EndUserInputs $input */
         $input = $this->serializer->deserialize($request->getContent(),EndUserInputs::class,'json');
         $this->validateInput($input);
-        $input->setClient($this->storage->getToken()->getUser());
         return $this->hydrate($input);
 
     }
@@ -81,27 +80,22 @@ class AddEndUserResolver
     public function hydrate(EndUserInputs $input)
     {
         $endUser = new EndUser();
-        $endUser->setClient($input->getClient());
+        $endUser->setClient($this->storage->getToken()->getUser());
         $endUser->setEmail($input->getEmail());
-        try{
-            $endUser->setLastname($input->getLastname());
-        }catch (\Exception $exception){
-            return [$exception];
-        }
+        $endUser->setLastname($input->getLastname());
         $endUser->setFistname($input->getFistname());
 
         $this->manager->persist($endUser);
         $this->manager->flush();
 
-        return ["url" => $this->url->generate('get_user',['id' => $endUser->getId()])];
+        return ["url" => $this->url->generate('get_user', ['id' => $endUser->getId()])];
     }
 
     public function validateInput(EndUserInputs $inputs)
     {
         $error = $this->validator->validate($inputs);
-        if ($error->count()>0){
-            dd($error->get(0)->getMessageTemplate());
-            throw new ValidatorExceptionCustom($error);
+        if ($error->count() > 0) {
+            throw new ValidatorExceptionCustom(ValidatorExceptionCustom::create($error));
         }
     }
 }
