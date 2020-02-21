@@ -12,23 +12,17 @@
 namespace App\Actions;
 
 use App\Actions\Domain\EndUsers\AddEndUserResolver;
-use App\Entity\Client;
-use App\Entity\EndUser;
-use App\Inputs\EndUserInputs;
-use App\Repository\ClientRepository;
 use App\Responder\ResponderJson;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class PostEnduser
  * @package App\Actions
- * @Route(name="post_user", path="api/users", methods={"POST"})
+ * @Route(name="post_user", path="api/clients/{client_id}/users", methods={"POST"})
  */
 class PostEnduser
 {

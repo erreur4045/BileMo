@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- *@Route(name="get_users", path="/api/users", methods={"GET"})
+ *@Route(name="get_users", path="/api/clients/{client_id}/users", methods={"GET"})
  */
 class GetEndUsers
 {

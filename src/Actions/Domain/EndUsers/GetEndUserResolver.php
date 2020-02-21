@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GetEndUserResolver
 {
     /** @var EndUserRepository */
-    private $enduserRepository;
+    private $endUserRepository;
     /** @var SerializerInterface */
     private $serializer;
 
@@ -32,7 +32,7 @@ class GetEndUserResolver
      */
     public function __construct(EndUserRepository $enduserRepository, SerializerInterface $serializer)
     {
-        $this->enduserRepository = $enduserRepository;
+        $this->endUserRepository = $enduserRepository;
         $this->serializer = $serializer;
     }
 
@@ -42,7 +42,7 @@ class GetEndUserResolver
             throw new BadRequestHttpException('The parameter is not valid, a value of type int is requested.', null, Response::HTTP_BAD_REQUEST,
                 ['Content-Type' => 'application/json']);
         }
-        $endUser = $this->enduserRepository->find(['id' => $request->attributes->get('id')]);
+        $endUser = $this->endUserRepository->find(['id' => $request->attributes->get('id')]);
         if ($endUser == null) {
             throw new NotFoundHttpException('User was not found, check your request', null, Response::HTTP_NOT_FOUND,
                 ['Content-Type' => 'application/json']);

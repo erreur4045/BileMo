@@ -11,6 +11,7 @@
 
 namespace App\Actions;
 
+use App\Actions\Domain\Phones\GetPhonesDetailsResolver;
 use App\Repository\PhoneRepository;
 use App\Repository\SupplierRepository;
 use App\Responder\ResponderJson;
@@ -26,38 +27,27 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class GetPhoneWithDetails
 {
-    /** @var PhoneRepository */
-    private $phoneRepository;
-    /** @var SerializerInterface */
-        private $serializer;
-    /** @var SupplierRepository */
-        private $supplierRepository;
     /** @var ResponderJson */
         private $responder;
+        /** @var GetPhonesDetailsResolver */
+        private $resolver;
+
     /**
      * GetPhoneWithDetails constructor.
-     * @param PhoneRepository $phoneRepository
-     * @param SerializerInterface $serializer
-     * @param SupplierRepository $supplierRepository
      * @param ResponderJson $responder
+     * @param GetPhonesDetailsResolver $resolver
      */
-    public function __construct(
-        PhoneRepository $phoneRepository,
-        SerializerInterface $serializer,
-        SupplierRepository $supplierRepository,
-        ResponderJson $responder
-    ) {
-        $this->phoneRepository = $phoneRepository;
-        $this->serializer = $serializer;
-        $this->supplierRepository = $supplierRepository;
+    public function __construct(ResponderJson $responder, GetPhonesDetailsResolver $resolver)
+    {
         $this->responder = $responder;
+        $this->resolver = $resolver;
     }
+
 
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $phone = $this->phoneRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        $phonesNormalized = $this->serializer->normalize($phone, 'json', ['groups' => 'phone_details_route']);
-        return $responder($phonesNormalized);
+        $phone = $this->resolver->resolve($request);
+        return $responder($phone);
     }
 }

@@ -11,8 +11,10 @@
 
 namespace App\Actions;
 
+use App\Actions\Domain\Phones\GetPhonesResolver;
 use App\Repository\PhoneRepository;
 use App\Responder\ResponderJson;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -24,34 +26,26 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class GetPhones
 {
-    /** @var PhoneRepository */
-    private $phoneRepository;
     /** @var ResponderJson */
     private $responder;
-    /** @var SerializerInterface */
-    private $serializer;
+    /** @var GetPhonesResolver */
+    private $resolver;
 
     /**
      * GetPhones constructor.
-     * @param PhoneRepository $phoneRepository
      * @param ResponderJson $responder
-     * @param SerializerInterface $serializer
+     * @param GetPhonesResolver $resolver
      */
-    public function __construct(
-        PhoneRepository $phoneRepository,
-        ResponderJson $responder,
-        SerializerInterface $serializer
-    ) {
-        $this->phoneRepository = $phoneRepository;
+    public function __construct(ResponderJson $responder, GetPhonesResolver $resolver)
+    {
         $this->responder = $responder;
-        $this->serializer = $serializer;
+        $this->resolver = $resolver;
     }
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $phones = $this->phoneRepository->findAll();
-        $data =  $this->serializer->normalize($phones, 'json', ['groups' => 'phone_list']);
+        $data =  $this->resolver->resolve($request);
         return $responder($data, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }
