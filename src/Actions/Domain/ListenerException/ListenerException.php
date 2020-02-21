@@ -33,15 +33,17 @@ class ListenerException
 
     public function onKernelException(ExceptionEvent $event)
     {
+
         $exception = $event->getThrowable();
-        dump($exception);
         $data = [
             'Error' => $exception->getMessage(),
         ];
         if (method_exists($exception, 'getStatusCode'))
             $data['Code'] = $exception->getStatusCode();
+        else
+            $data['Code'] = 404;
 
-        $response = new JsonResponse($data,500,['Content-Type' => 'application/json']);
+        $response = new JsonResponse($data,$data['Code'],['Content-Type' => 'application/json']);
 
         // setup the Response object based on the caught exception
         $event->setResponse($response);

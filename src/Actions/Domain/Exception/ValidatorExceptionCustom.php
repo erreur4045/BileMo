@@ -10,14 +10,29 @@
 
 namespace App\Actions\Domain\Exception;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 class ValidatorExceptionCustom extends ValidatorException
 {
-    public function __invoke($ex)
-   {
-       dd("kikou");
-    dd($this->exceptions);
-   }
+    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
+
+    static function create($error)
+    {
+        foreach ($error as $item) {
+            /** @var ConstraintViolation $item */
+            dump($item);
+            $data = [
+              'message' => $item->getMessage(),
+                'property' => $item->getPropertyPath()
+            ];
+        }
+    }
 }

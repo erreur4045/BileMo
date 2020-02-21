@@ -26,3 +26,6 @@ services:
 #   App\Actions\Domain\FormatData\CustomNormaliser:
 #       public: false
 #       tags: [serializer.normalizer]
+    App\Actions\Domain\ListenerException\ListenerException:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
