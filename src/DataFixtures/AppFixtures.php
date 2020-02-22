@@ -40,7 +40,20 @@ class AppFixtures extends Fixture
             ]
         ];
 
-        $phones = ['P8','SE8','iphone45','3310','dsfsdf','sdfsdfsdf','sdfsdfsdfsdf','sdfsdfsdfsdf','sdfsdfsdfdsf','sdfsdfsdfsdf','sdfsdfsdf','sdfsdfsdfsdf' ];
+        $phones = [
+            'P8',
+            'SE8',
+            'iphone45',
+            '3310',
+            'dsfsdf',
+            'sdfsdfsdf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdfdsf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdf',
+            'sdfsdfsdfsdf'
+        ];
 
         $clients = [
             [

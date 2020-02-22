@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/16/2020
@@ -10,9 +11,9 @@
 
 namespace App\Inputs;
 
-
 use App\Entity\Client;
 use Symfony\Component\Validator\Constraints as Assert;
+
 class EndUserInputs
 {
     /**
@@ -20,18 +21,17 @@ class EndUserInputs
      * @Assert\NotBlank()
      */
     private $lastname;
-    /**
+/**
      * @var string|null
      * @Assert\NotBlank()
      */
     private $fistname;
-    /**
+/**
      * @var string|null
      * @Assert\NotBlank()
      */
     private $email;
-
-    /**
+/**
      * @return string|null
      */
     public function getLastname(): ?string

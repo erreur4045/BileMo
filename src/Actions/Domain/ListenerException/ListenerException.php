@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/17/2020
@@ -10,7 +11,6 @@
 
 namespace App\Actions\Domain\ListenerException;
 
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -21,7 +21,6 @@ class ListenerException
 {
     /** @var SerializerInterface */
     private $serializer;
-
     /**
      * ListenerException constructor.
      * @param SerializerInterface $serializer
@@ -38,16 +37,14 @@ class ListenerException
         $data = [
             'Error' => $exception->getMessage(),
         ];
-        if (method_exists($exception, 'getStatusCode'))
+        if (method_exists($exception, 'getStatusCode')) {
             $data['Code'] = $exception->getStatusCode();
-        else
+        } else {
             $data['Code'] = 404;
+        }
 
-        $response = new JsonResponse($data,$data['Code'],['Content-Type' => 'application/json']);
-
-        // setup the Response object based on the caught exception
+        $response = new JsonResponse($data, $data['Code'], ['Content-Type' => 'application/json']);
+// setup the Response object based on the caught exception
         $event->setResponse($response);
     }
-
-
 }

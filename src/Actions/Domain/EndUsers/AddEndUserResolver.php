@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/16/2020
@@ -9,7 +10,6 @@
  */
 
 namespace App\Actions\Domain\EndUsers;
-
 
 use App\Actions\Domain\Exception\ValidatorExceptionCustom;
 use App\Entity\EndUser;
@@ -29,16 +29,15 @@ class AddEndUserResolver
     /** @var SerializerInterface */
     private $serializer;
     /** @var TokenStorageInterface */
-    private $storage;
+        private $storage;
     /** @var EntityManagerInterface */
-    private $manager;
+        private $manager;
     /** @var  AuthorizationCheckerInterface*/
-    private $autorization;
+        private $autorization;
     /** @var UrlGeneratorInterface */
-    private $url;
+        private $url;
     /** @var ValidatorInterface */
-    private $validator;
-
+        private $validator;
     /**
      * AddEndUserResolver constructor.
      * @param SerializerInterface $serializer
@@ -67,14 +66,14 @@ class AddEndUserResolver
 
     public function resolve(Request $request)
     {
-        if ($this->storage->getToken()->getUser() == null)
+        if ($this->storage->getToken()->getUser() == null) {
             throw new AccessDeniedHttpException('You can\'t add a user');
+        }
 
         /** @var EndUserInputs $input */
-        $input = $this->serializer->deserialize($request->getContent(),EndUserInputs::class,'json');
+        $input = $this->serializer->deserialize($request->getContent(), EndUserInputs::class, 'json');
         $this->validateInput($input);
         return $this->hydrate($input);
-
     }
 
     public function hydrate(EndUserInputs $input)
@@ -84,10 +83,8 @@ class AddEndUserResolver
         $endUser->setEmail($input->getEmail());
         $endUser->setLastname($input->getLastname());
         $endUser->setFistname($input->getFistname());
-
         $this->manager->persist($endUser);
         $this->manager->flush();
-
         return ["url" => $this->url->generate('get_user', ['id' => $endUser->getId()])];
     }
 

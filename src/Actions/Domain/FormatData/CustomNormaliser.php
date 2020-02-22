@@ -24,9 +24,9 @@ class CustomNormaliser implements ContextAwareNormalizerInterface
 {
     /** @var UrlGeneratorInterface */
     private $router;
-/** @var ObjectNormalizer */
+    /** @var ObjectNormalizer */
     private $normalizer;
-/**
+    /**
      * CustomNormaliser constructor.
      * @param UrlGeneratorInterface $router
      * @param ObjectNormalizer $normalizer

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/16/2020
@@ -24,11 +25,10 @@ class ValidatorExceptionCustom extends ValidatorException
         parent::__construct($message, $code, $previous);
     }
 
-    static function create($error)
+    public static function create($error)
     {
         foreach ($error as $item) {
-            /** @var ConstraintViolation $item */
-            dump($item);
+    /** @var ConstraintViolation $item */
             $data = [
               'message' => $item->getMessage(),
                 'property' => $item->getPropertyPath()

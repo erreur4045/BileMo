@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/17/2020
@@ -9,7 +10,6 @@
  */
 
 namespace App\Actions\Domain\EndUsers;
-
 
 use App\Repository\EndUserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,6 @@ class GetEndUserResolver
     private $endUserRepository;
     /** @var SerializerInterface */
     private $serializer;
-
     /**
      * GetEndUserResolver constructor.
      * @param EndUserRepository $enduserRepository
@@ -38,14 +37,25 @@ class GetEndUserResolver
 
     public function resolve(Request $request)
     {
-        if (is_int((int)$request->attributes->get('id')) == false OR strlen($request->attributes->get('id')) != strlen((int)$request->attributes->get('id'))){
-            throw new BadRequestHttpException('The parameter is not valid, a value of type int is requested.', null, Response::HTTP_BAD_REQUEST,
-                ['Content-Type' => 'application/json']);
+        if (
+            is_int((int)$request->attributes->get('id')) == false
+            or strlen($request->attributes->get('id')) != strlen((int)$request->attributes->get('id'))
+        ) {
+            throw new BadRequestHttpException(
+                'The parameter is not valid, a value of type int is requested.',
+                null,
+                Response::HTTP_BAD_REQUEST,
+                ['Content-Type' => 'application/json']
+            );
         }
         $endUser = $this->endUserRepository->find(['id' => $request->attributes->get('id')]);
         if ($endUser == null) {
-            throw new NotFoundHttpException('User was not found, check your request', null, Response::HTTP_NOT_FOUND,
-                ['Content-Type' => 'application/json']);
+            throw new NotFoundHttpException(
+                'User was not found, check your request',
+                null,
+                Response::HTTP_NOT_FOUND,
+                ['Content-Type' => 'application/json']
+            );
         }
         $endUserSerialised = $this->serializer->normalize($endUser, 'json', ['groups' => 'user_details_route']);
         return $endUserSerialised;

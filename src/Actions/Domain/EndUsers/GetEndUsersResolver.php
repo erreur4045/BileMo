@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/21/2020
@@ -22,10 +23,9 @@ class GetEndUsersResolver
 {
     public const LIMIT_PER_PAGE = 10;
     /** @var EndUserRepository */
-    private $endUserRepository;
+        private $endUserRepository;
     /** @var SerializerInterface */
-    private $serializer;
-
+        private $serializer;
     /**
      * GetEndUsersResolver constructor.
      * @param EndUserRepository $endUserRepository
@@ -41,46 +41,76 @@ class GetEndUsersResolver
     {
         $connectedClient = (int)$client->getId();
         $clientId = (int)$request->get('client_id');
-        if ($connectedClient != $clientId)
-            throw new ForbiddenOverwriteException('You can\'t access these resources.',Response::HTTP_FORBIDDEN,null);
+        if ($connectedClient != $clientId) {
+            throw new ForbiddenOverwriteException('You can\'t access these resources.', Response::HTTP_FORBIDDEN, null);
+        }
         $page = $request->query->get('page');
         $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
-        $nbMaxPage = ceil($nbEndUsers/GetEndUsersResolver::LIMIT_PER_PAGE);
-        if ($nbMaxPage > 1 and  $page == null)
+        $nbMaxPage = ceil($nbEndUsers / GetEndUsersResolver::LIMIT_PER_PAGE);
+        if ($nbMaxPage > 1 and  $page == null) {
             $page = 1;
-        if ($page > $nbMaxPage)
-            throw new BadRequestHttpException(sprintf('The requested page does not exist, last page is /api/clients/%s/users?page=%s', $connectedClient, $nbMaxPage),null,Response::HTTP_BAD_REQUEST,['Content-type' => 'application/json']);
+        }
+        if ($page > $nbMaxPage) {
+            throw new BadRequestHttpException(
+                sprintf(
+                    'The requested page does not exist, last page is /api/clients/%s/users?page=%s',
+                    $connectedClient,
+                    $nbMaxPage
+                ),
+                null,
+                Response::HTTP_BAD_REQUEST,
+                ['Content-type' => 'application/json']
+            );
+        }
         $page == null ? $nextPage = 2 : $nextPage = $page + 1;
         /**
          * Generate the layout for all pages except first
          */
-        if ($nbMaxPage > 1 and $page > 1){
+        if ($nbMaxPage > 1 and $page > 1) {
             $endUsers['pagination'] = [
-                'first_page' => sprintf('/api/clients/%s/users?page=1', $connectedClient),
-                'actual_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $page,
-                'last_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage
+                'first_page' => sprintf(
+                    '/api/clients/%s/users?page=1',
+                    $connectedClient
+                ),
+                'actual_page' => sprintf(
+                    '/api/clients/%s/users?page=',
+                    $connectedClient
+                ) . $page,
+                'last_page' => sprintf(
+                    '/api/clients/%s/users?page=',
+                    $connectedClient
+                ) . $nbMaxPage
             ];
-            if ($page < $nbMaxPage)
-                $endUsers['pagination']['next_page'] = sprintf('/api/clients/%s/users?page=', $connectedClient) . $nextPage;
-            $endUsers['users'] = $this->endUserRepository->findBy([],[],GetEndUsersResolver::LIMIT_PER_PAGE,$page * GetEndUsersResolver::LIMIT_PER_PAGE - GetEndUsersResolver::LIMIT_PER_PAGE );
-        }
-        /**
-         * Generate the layout for the first page if pagination is necessary
-         */
-        elseif($nbMaxPage > 1 and $page == 1 ){
+            if ($page < $nbMaxPage) {
+                $endUsers['pagination']['next_page'] = sprintf(
+                    '/api/clients/%s/users?page=',
+                    $connectedClient
+                ) . $nextPage;
+            }
+            $endUsers['users'] = $this->endUserRepository->findBy(
+                [],
+                [],
+                GetEndUsersResolver::LIMIT_PER_PAGE,
+                $page * GetEndUsersResolver::LIMIT_PER_PAGE - GetEndUsersResolver::LIMIT_PER_PAGE
+            );
+        } elseif ($nbMaxPage > 1 and $page == 1) {
+            /** Generate the layout for the first page if pagination is necessary */
             $endUsers['pagination'] = [
                 'actual_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $page,
                 'next_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nextPage,
                 'last_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage,
             ];
-            $endUsers['users'] = $this->endUserRepository->findBy([],[],GetEndUsersResolver::LIMIT_PER_PAGE,$page * GetEndUsersResolver::LIMIT_PER_PAGE );
-        }
-        else {
-            $endUsers = $this->endUserRepository->findBy([],[],GetEndUsersResolver::LIMIT_PER_PAGE );
+            $endUsers['users'] = $this->endUserRepository->findBy(
+                [],
+                [],
+                GetEndUsersResolver::LIMIT_PER_PAGE,
+                $page * GetEndUsersResolver::LIMIT_PER_PAGE
+            );
+        } else {
+            $endUsers = $this->endUserRepository->findBy([], [], GetEndUsersResolver::LIMIT_PER_PAGE);
         }
 
         $endUsersNormalized =  $this->serializer->normalize($endUsers, 'json', ['groups' => 'phone_list']);
-
         return $endUsersNormalized;
     }
 }

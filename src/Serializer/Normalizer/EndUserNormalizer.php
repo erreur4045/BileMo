@@ -18,7 +18,6 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         $this->normalizer = $normalizer;
         $this->security = $security;
-
     }
 
     public function normalize($object, $format = null, array $context = array()): array
