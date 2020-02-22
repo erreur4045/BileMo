@@ -68,15 +68,15 @@ class GetEndUsersResolver
          */
         if ($nbMaxPage > 1 and $page > 1) {
             $endUsers['pagination'] = [
-                'first_page' => sprintf(
+                'first' => sprintf(
                     '/api/clients/%s/users?page=1',
                     $connectedClient
                 ),
-                'actual_page' => sprintf(
+                'current' => sprintf(
                     '/api/clients/%s/users?page=',
                     $connectedClient
                 ) . $page,
-                'last_page' => sprintf(
+                'last' => sprintf(
                     '/api/clients/%s/users?page=',
                     $connectedClient
                 ) . $nbMaxPage
@@ -96,9 +96,9 @@ class GetEndUsersResolver
         } elseif ($nbMaxPage > 1 and $page == 1) {
             /** Generate the layout for the first page if pagination is necessary */
             $endUsers['pagination'] = [
-                'actual_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $page,
-                'next_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nextPage,
-                'last_page' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage,
+                'current' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $page,
+                'next' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nextPage,
+                'last' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage,
             ];
             $endUsers['users'] = $this->endUserRepository->findBy(
                 [],

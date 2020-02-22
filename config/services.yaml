@@ -23,9 +23,6 @@ services:
         resource: '../src/Actions'
         tags: ['controller.service_arguments']
 
-#   App\Actions\Domain\FormatData\CustomNormaliser:
-#       public: false
-#       tags: [serializer.normalizer]
-    App\Actions\Domain\ListenerException\ListenerException:
+    App\Actions\Domain\Subscriber\EventSubscriber:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }

@@ -11,12 +11,18 @@
 
 namespace App\Actions\Domain\EndUsers;
 
+use App\Actions\Domain\Exception\InputExceptions;
 use App\Actions\Domain\Exception\ValidatorExceptionCustom;
+use App\Actions\Domain\ListenerException\ListenerException;
 use App\Entity\EndUser;
 use App\Inputs\EndUserInputs;
+use App\Repository\EndUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -67,11 +73,11 @@ class AddEndUserResolver
     public function resolve(Request $request)
     {
         if ($this->storage->getToken()->getUser() == null) {
-            throw new AccessDeniedHttpException('You can\'t add a user');
+            throw new AccessDeniedHttpException('You can\'t add an user');
         }
-
         /** @var EndUserInputs $input */
         $input = $this->serializer->deserialize($request->getContent(), EndUserInputs::class, 'json');
+        $this->emailExist($input->getEmail());
         $this->validateInput($input);
         return $this->hydrate($input);
     }
@@ -85,14 +91,20 @@ class AddEndUserResolver
         $endUser->setFistname($input->getFistname());
         $this->manager->persist($endUser);
         $this->manager->flush();
-        return ["url" => $this->url->generate('get_user', ['id' => $endUser->getId()])];
+        return ["url" => $this->url->generate('get_user', ['id' => $endUser->getId(), 'client_id' => $this->storage->getToken()->getUser()->getId()])];
     }
 
     public function validateInput(EndUserInputs $inputs)
     {
         $error = $this->validator->validate($inputs);
         if ($error->count() > 0) {
-            throw new ValidatorExceptionCustom(ValidatorExceptionCustom::create($error));
+            throw new InputExceptions(ValidatorExceptionCustom::create($error));
         }
+    }
+
+    public function emailExist($email)
+    {
+        if ($this->manager->getRepository(EndUser::class)->findOneBy(['email' => $email]))
+            throw new Exception('This email already exists for another user, please change it.', Response::HTTP_BAD_REQUEST, null);
     }
 }

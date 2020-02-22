@@ -70,9 +70,9 @@ class GetPhonesResolver
          */
         if ($nbMaxPage > 1 and $page > 1) {
             $phones['pagination'] = [
-                'first_page' => 'api/phones?page=1',
-                'actual_page' => "api/phones?page=" . $page,
-                'last_page' => "api/phones?page=" . $nbMaxPage
+                'first' => 'api/phones?page=1',
+                'current' => "api/phones?page=" . $page,
+                'last' => "api/phones?page=" . $nbMaxPage
             ];
             if ($page < $nbMaxPage) {
                 $phones['pagination']['next_page'] = "api/phones?page=" . $nextPage;
@@ -86,9 +86,9 @@ class GetPhonesResolver
         } elseif ($nbMaxPage > 1 and $page == 1) {
             /** Generate the layout for the first page if pagination is necessary */
             $phones['pagination'] = [
-                'actual_page' => "api/phones?page=" . $page,
-                'next_page' => "api/phones?page=" . $nextPage,
-                'last_page' => "api/phones?page=" . $nbMaxPage
+                'current' => "api/phones?page=" . $page,
+                'next' => "api/phones?page=" . $nextPage,
+                'last' => "api/phones?page=" . $nbMaxPage
             ];
             $phones['phones'] = $this->phoneRepository->findBy(
                 [],
