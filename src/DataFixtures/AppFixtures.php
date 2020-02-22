@@ -125,7 +125,7 @@ class AppFixtures extends Fixture
         $allClient = $manager->getRepository(Client::class)->findAll();
         $nbClient = count($allClient);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
                 $user = new EndUser();
                 $user->setEmail($faker->email);
                 $user->setFistName($faker->firstName);

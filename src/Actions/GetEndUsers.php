@@ -11,8 +11,11 @@
 
 namespace App\Actions;
 
+use App\Actions\Domain\EndUsers\GetEndUsersResolver;
+use App\Entity\Client;
 use App\Repository\EndUserRepository;
 use App\Responder\ResponderJson;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,28 +32,33 @@ class GetEndUsers
     private $responder;
     /** @var SerializerInterface */
     private $serializer;
+    /** @var GetEndUsersResolver */
+    private $resolver;
 
     /**
-     * GetUsers constructor.
+     * GetEndUsers constructor.
      * @param EndUserRepository $usersRepository
-     * @param SerializerInterface $serilizer
      * @param ResponderJson $responder
+     * @param SerializerInterface $serializer
+     * @param GetEndUsersResolver $resolver
      */
     public function __construct(
         EndUserRepository $usersRepository,
-        SerializerInterface $serilizer,
-        ResponderJson $responder
+        ResponderJson $responder,
+        SerializerInterface $serializer,
+        GetEndUsersResolver $resolver
     ) {
         $this->usersRepository = $usersRepository;
-        $this->serializer = $serilizer;
         $this->responder = $responder;
+        $this->serializer = $serializer;
+        $this->resolver = $resolver;
     }
 
-    public function __invoke(UserInterface $client)
+
+    public function __invoke(Request $request, UserInterface $client)
     {
         $responder = $this->responder;
-        $users = $this->usersRepository->findBy(['client' => $client->getId()]);
-        $usersNormalized = $this->serializer->normalize($users, 'json', ['groups' => 'list_users']);
+        $usersNormalized = $this->resolver->resolve($request, $client);
         return $responder($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }

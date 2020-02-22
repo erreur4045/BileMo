@@ -135,31 +135,8 @@ class EndUser implements \JsonSerializable
     public function jsonSerialize()
     {
 
-        if ($_SERVER['REQUEST_URI'] == '/api/users') {
-            $data = [
-                'id' => $this->id,
-                'email' => $this->email,
-                '_href'  => [
-                    'self' => $_SERVER['REQUEST_URI'],
-                    'posts' => '/api/users',
-                    'delete' => sprintf('/api/users/%s', $this->id),
-                    'details' => sprintf('/api/users/%s', $this->id)
-                ]
-            ];
-        } else {
-            $data = [
-                'id' => $this->id,
-                'email' => $this->email,
-                'lastname' => $this->lastname,
-                'fistname' => $this->fistname,
-                '_href'  => [
-                    'self' => $_SERVER['REQUEST_URI'],
-                    'posts' => '/api/users',
-                    'delete' => sprintf('/api/users/%s', $this->id)
-                ]
-            ];
-        }
 
-        return $data;
+
+        return ;
     }
 }

@@ -38,16 +38,6 @@ class CustomNormaliser implements ContextAwareNormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param array $context options that normalizers have access to
-     */
-    public function supportsNormalization($data, $format = null, array $context = [])
-    {
-        return $data instanceof Phone;
-    }
-
-    /**
      * Normalizes an object into a set of arrays/scalars.
      *
      * @param mixed $object Object to normalize
@@ -67,11 +57,21 @@ class CustomNormaliser implements ContextAwareNormalizerInterface
     {
         $data = $this->normalizer->normalize($object, $format, $context);
         $data['links']['self'] = $_SERVER['REQUEST_URI'];
-        if ($data['links']['self'] != '/api/phones/' . $object->getId()) {
+        if ($context['groups'] == 'phone_list') {
             $data['links']['details'] = '/api/phones/' . $object->getId();
         } else {
             $data['links']['list'] = $this->router->generate('get_phones', [], UrlGeneratorInterface::ABSOLUTE_PATH);
         }
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param array $context options that normalizers have access to
+     */
+    public function supportsNormalization($data, $format = null, array $context = [])
+    {
+                return $data instanceof Phone;
     }
 }

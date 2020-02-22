@@ -13,8 +13,6 @@ namespace App\Actions\Domain\Phones;
 
 use App\Entity\Phone;
 use App\Repository\PhoneRepository;
-use App\Responder\ResponderJson;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +21,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetPhonesResolver
 {
-    public const LIMIT_PER_PAGE = 5;
+    public const LIMIT_PER_PAGE = 10;
     /** @var PhoneRepository */
     private $phoneRepository;
-    /** @var ResponderJson */
-    private $responder;
     /** @var SerializerInterface */
     private $serializer;
     /** @var EntityManagerInterface */
@@ -36,18 +32,15 @@ class GetPhonesResolver
     /**
      * GetPhonesResolver constructor.
      * @param PhoneRepository $phoneRepository
-     * @param ResponderJson $responder
      * @param SerializerInterface $serializer
      * @param EntityManagerInterface $manager
      */
     public function __construct(
         PhoneRepository $phoneRepository,
-        ResponderJson $responder,
         SerializerInterface $serializer,
         EntityManagerInterface $manager
     ) {
         $this->phoneRepository = $phoneRepository;
-        $this->responder = $responder;
         $this->serializer = $serializer;
         $this->manager = $manager;
     }
@@ -79,13 +72,13 @@ class GetPhonesResolver
         /**
          * Generate the layout for the first page if pagination is necessary
          */
-        elseif($nbMaxPage > 1 and $page == 1 or $page == null){
+        elseif($nbMaxPage > 1 and $page == 1 ){
             $phones['pagination'] = [
                 'actual_page' => "api/phones?page=" . $page,
                 'next_page' => "api/phones?page=" . $nextPage,
                 'last_page' => "api/phones?page=" . $nbMaxPage
             ];
-            $phones['phones'] = $this->phoneRepository->findBy([],[],GetPhonesResolver::LIMIT_PER_PAGE,$page * GetPhonesResolver::LIMIT_PER_PAGE - GetPhonesResolver::LIMIT_PER_PAGE );
+            $phones['phones'] = $this->phoneRepository->findBy([],[],GetPhonesResolver::LIMIT_PER_PAGE,$page * GetPhonesResolver::LIMIT_PER_PAGE );
         }
         else {
             $phones = $this->phoneRepository->findBy([],[],GetPhonesResolver::LIMIT_PER_PAGE );
