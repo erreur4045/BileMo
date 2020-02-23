@@ -9,7 +9,7 @@
  * FileName : ValidatorExceptionCustom.php as ValidatorExceptionCustom
  */
 
-namespace App\Actions\Domain\Exception;
+namespace App\Exception;
 
 use Exception;
 use Symfony\Component\Validator\ConstraintViolation;

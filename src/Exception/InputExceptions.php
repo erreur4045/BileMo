@@ -8,8 +8,7 @@
  * FileName : InputExceptions.php as InputExceptions
  */
 
-namespace App\Actions\Domain\Exception;
-
+namespace App\Exception;
 
 use Exception;
 use Throwable;
