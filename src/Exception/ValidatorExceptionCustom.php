@@ -22,7 +22,7 @@ class ValidatorExceptionCustom
     {
         $data = [];
         /** @var ConstraintViolation $error */
-        foreach ($errors as $error){
+        foreach ($errors as $error) {
             $data['message'][] = $error->getPropertyPath() . ' => ' . $error->getMessage();
         }
         return $data;

@@ -21,10 +21,9 @@ class ResponderJson
         $status = Response::HTTP_OK,
         $header = ['Content-Type' => 'application/json'],
         $cachable = null
-    )
-    {
+    ) {
         $response = new JsonResponse($data, $status, $header);
-        if ($cachable){
+        if ($cachable) {
             $response->setPublic()->setSharedMaxAge(300)->setMaxAge(300);
         }
         return $response;

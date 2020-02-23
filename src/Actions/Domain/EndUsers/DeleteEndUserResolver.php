@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/23/2020
@@ -9,7 +10,6 @@
  */
 
 namespace App\Actions\Domain\EndUsers;
-
 
 use App\Entity\EndUser;
 use App\Repository\EndUserRepository;
@@ -31,16 +31,15 @@ class DeleteEndUserResolver
 {
     /** @var SerializerInterface */
     private $serializer;
-    /** @var TokenStorageInterface */
+/** @var TokenStorageInterface */
     private $storage;
-    /** @var EntityManagerInterface */
+/** @var EntityManagerInterface */
     private $manager;
-    /** @var ValidatorInterface */
+/** @var ValidatorInterface */
     private $validator;
-    /** @var EndUserRepository */
+/** @var EndUserRepository */
     private $endUserRepo;
-
-    /**
+/**
      * DeleteEndUserResolver constructor.
      * @param SerializerInterface $serializer
      * @param TokenStorageInterface $storage
@@ -70,12 +69,10 @@ class DeleteEndUserResolver
     public function resolve(Request $request, UserInterface $client)
     {
         if ($this->storage->getToken()->getUser() == null or (int)$request->get('client_id') != $client->getId()) {
-            throw new AccessDeniedHttpException('You can\'t delete this user', null,Response::HTTP_UNAUTHORIZED);
-        }
-        elseif ($this->manager->getRepository(EndUser::class)->find($request->get('id')) == null){
+            throw new AccessDeniedHttpException('You can\'t delete this user', null, Response::HTTP_UNAUTHORIZED);
+        } elseif ($this->manager->getRepository(EndUser::class)->find($request->get('id')) == null) {
             throw new Exception('User doesn\'t exist', Response::HTTP_BAD_REQUEST);
-        }
-        else{
+        } else {
             $this->manager->remove($this->manager->getRepository(EndUser::class)->find($request->get('id')));
             $this->manager->flush();
         }

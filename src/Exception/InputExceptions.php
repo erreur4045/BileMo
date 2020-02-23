@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/22/2020
@@ -17,8 +18,7 @@ class InputExceptions extends Exception
 {
     /** @var array */
     protected $errors;
-
-    /**
+/**
      * InputExceptions constructor.
      *
      * @param array $errors

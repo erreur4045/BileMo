@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/22/2020
@@ -9,7 +10,6 @@
  */
 
 namespace App\Actions\Domain\Subscriber;
-
 
 use App\Actions\Domain\Exception\InputExceptions;
 use App\Responder\ResponderJson;
@@ -50,30 +50,26 @@ class EventSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event)
     {
-        if ($event->getThrowable()->getCode())
+        if ($event->getThrowable()->getCode()) {
             $code = $event->getThrowable()->getCode();
-        elseif (method_exists($event->getThrowable(),'getStatusCode') == true)
+        } elseif (method_exists($event->getThrowable(), 'getStatusCode') == true) {
             $code = $event->getThrowable()->getStatusCode();
-        else
+        } else {
             $code = 404;
+        }
 
         $message = [
             'message' => $event->getThrowable()->getMessage()
         ];
-        switch (get_class($event->getThrowable()))
-        {
+        switch (get_class($event->getThrowable())) {
             case InputExceptions::class:
-                $code = 400;
                 $message = $event->getThrowable()->getErrors();
                 break;
             case NotEncodableValueException ::class:
-                $code = 500;
                 $message = 'No content, request seems empty';
                 break;
             case HttpException::class:
-                $code = $event->getThrowable()->getCode();
                 break;
-
         }
         $event->setResponse(ResponderJson::response($message, $code));
     }

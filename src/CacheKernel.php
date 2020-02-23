@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/23/2020
@@ -10,10 +11,8 @@
 
 namespace App;
 
-
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 
 class CacheKernel extends HttpCache
 {
-
 }

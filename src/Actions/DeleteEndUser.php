@@ -38,8 +38,7 @@ class DeleteEndUser
     public function __construct(
         ResponderJson $responder,
         DeleteEndUserResolver $resolver
-    )
-    {
+    ) {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }
