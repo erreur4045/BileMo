@@ -48,6 +48,6 @@ class DeleteEndUser
     {
         $responder = $this->responder;
         $this->resolver->resolve($request, $client);
-        return $responder(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
+        return $responder->response(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
     }
 }

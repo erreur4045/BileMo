@@ -59,6 +59,6 @@ class GetEndUsers
     {
         $responder = $this->responder;
         $usersNormalized = $this->resolver->resolve($request, $client);
-        return $responder($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        return $responder->response($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }

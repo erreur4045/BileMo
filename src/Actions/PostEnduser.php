@@ -59,6 +59,6 @@ class PostEnduser
     {
         $responder = $this->responder;
         $inputdata = $this->resolver->resolve($request);
-        return $responder($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        return $responder->response($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 }

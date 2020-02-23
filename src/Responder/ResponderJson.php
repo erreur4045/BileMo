@@ -16,15 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResponderJson
 {
-    public function __invoke(
-        $data,
-        $status = Response::HTTP_OK,
-        $header = ['Content-Type' => 'application/json'],
-        $cachable = null
-    ) {
-        return new JsonResponse($data, $status, $header);
-    }
-
     public static function response(
         $data,
         $status = Response::HTTP_OK,
@@ -32,6 +23,10 @@ class ResponderJson
         $cachable = null
     )
     {
-        return new JsonResponse($data, $status, $header);
+        $response = new JsonResponse($data, $status, $header);
+        if ($cachable){
+            $response->setPublic()->setSharedMaxAge(300)->setMaxAge(300);
+        }
+        return $response;
     }
 }

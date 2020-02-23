@@ -48,6 +48,6 @@ class GetPhoneWithDetails
     {
         $responder = $this->responder;
         $phone = $this->resolver->resolve($request);
-        return $responder($phone);
+        return $responder->response($phone, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }

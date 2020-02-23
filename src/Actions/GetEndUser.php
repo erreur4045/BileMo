@@ -56,6 +56,6 @@ class GetEndUser
     {
         $responder = $this->responder;
         $endUser = $this->resolver->resolve($request, $client);
-        return $responder($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        return $responder->response($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }
