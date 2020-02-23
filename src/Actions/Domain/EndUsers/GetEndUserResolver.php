@@ -14,8 +14,10 @@ namespace App\Actions\Domain\EndUsers;
 use App\Repository\EndUserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class GetEndUserResolver
@@ -35,10 +37,12 @@ class GetEndUserResolver
         $this->serializer = $serializer;
     }
 
-    public function resolve(Request $request)
+    public function resolve(Request $request, UserInterface $client)
     {
         if (
             is_int((int)$request->attributes->get('id')) == false
+            or is_int((int)$request->attributes->get('client_id')) == false
+            or strlen($request->attributes->get('client_id')) != strlen((int)$request->attributes->get('client_id'))
             or strlen($request->attributes->get('id')) != strlen((int)$request->attributes->get('id'))
         ) {
             throw new BadRequestHttpException(
@@ -56,6 +60,11 @@ class GetEndUserResolver
                 Response::HTTP_NOT_FOUND,
                 ['Content-Type' => 'application/json']
             );
+        }
+        if ($this->endUserRepository->findOneBy(['id' => $request->attributes->get('id'), 'client' => $request->attributes->get('client_id')]) == false
+        or $client->getId() != $request->attributes->get('client_id')
+        ){
+            throw new AccessDeniedHttpException('You don\'t have the permissions for this resource.', null, Response::HTTP_UNAUTHORIZED );
         }
         $endUserSerialised = $this->serializer->normalize($endUser, 'json', ['groups' => 'user_details_route']);
         return $endUserSerialised;

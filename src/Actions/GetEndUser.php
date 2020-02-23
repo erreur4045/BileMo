@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -51,10 +52,10 @@ class GetEndUser
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, UserInterface $client)
     {
         $responder = $this->responder;
-        $endUser = $this->resolver->resolve($request);
+        $endUser = $this->resolver->resolve($request, $client);
         return $responder($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }
