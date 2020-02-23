@@ -50,7 +50,11 @@ class EventSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event)
     {
-        $code = 500;
+        if ($event->getThrowable()->getCode())
+            $code = $event->getThrowable()->getCode();
+        else
+            $code = 500;
+
         $message = [
             'message' => $event->getThrowable()->getMessage()
         ];
@@ -67,6 +71,7 @@ class EventSubscriber implements EventSubscriberInterface
             case HttpException::class:
                 $code = $event->getThrowable()->getCode();
                 break;
+
         }
         $event->setResponse(ResponderJson::response($message, $code));
     }

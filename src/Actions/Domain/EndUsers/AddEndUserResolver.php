@@ -16,16 +16,13 @@ use App\Actions\Domain\Exception\ValidatorExceptionCustom;
 use App\Actions\Domain\ListenerException\ListenerException;
 use App\Entity\EndUser;
 use App\Inputs\EndUserInputs;
-use App\Repository\EndUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,13 +30,11 @@ class AddEndUserResolver
 {
 
     /** @var SerializerInterface */
-    private $serializer;
+        private $serializer;
     /** @var TokenStorageInterface */
         private $storage;
     /** @var EntityManagerInterface */
         private $manager;
-    /** @var  AuthorizationCheckerInterface*/
-        private $autorization;
     /** @var UrlGeneratorInterface */
         private $url;
     /** @var ValidatorInterface */
@@ -49,7 +44,6 @@ class AddEndUserResolver
      * @param SerializerInterface $serializer
      * @param TokenStorageInterface $storage
      * @param EntityManagerInterface $manager
-     * @param AuthorizationCheckerInterface $autorization
      * @param UrlGeneratorInterface $url
      * @param ValidatorInterface $validator
      */
@@ -57,14 +51,12 @@ class AddEndUserResolver
         SerializerInterface $serializer,
         TokenStorageInterface $storage,
         EntityManagerInterface $manager,
-        AuthorizationCheckerInterface $autorization,
         UrlGeneratorInterface $url,
         ValidatorInterface $validator
     ) {
         $this->serializer = $serializer;
         $this->storage = $storage;
         $this->manager = $manager;
-        $this->autorization = $autorization;
         $this->url = $url;
         $this->validator = $validator;
     }
