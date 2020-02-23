@@ -47,7 +47,7 @@ class GetEndUsersResolver
         $page = $request->query->get('page');
         $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
         $nbMaxPage = ceil($nbEndUsers / GetEndUsersResolver::LIMIT_PER_PAGE);
-        if ($nbMaxPage > 1 and  $page == null) {
+        if ($nbMaxPage > 1 and $page == null) {
             $page = 1;
         }
         if ($page > $nbMaxPage) {
@@ -103,8 +103,7 @@ class GetEndUsersResolver
             $endUsers['users'] = $this->endUserRepository->findBy(
                 [],
                 [],
-                GetEndUsersResolver::LIMIT_PER_PAGE,
-                $page * GetEndUsersResolver::LIMIT_PER_PAGE
+                GetEndUsersResolver::LIMIT_PER_PAGE
             );
         } else {
             $endUsers = $this->endUserRepository->findBy([], [], GetEndUsersResolver::LIMIT_PER_PAGE);

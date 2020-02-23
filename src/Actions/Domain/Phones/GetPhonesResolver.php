@@ -50,7 +50,7 @@ class GetPhonesResolver
         $page = $request->query->get('page');
         $nbPhone = $this->manager->getRepository(Phone::class)->count([]);
         $nbMaxPage = ceil($nbPhone / GetPhonesResolver::LIMIT_PER_PAGE);
-        if ($nbMaxPage > 1 and  $page == null) {
+        if ($nbMaxPage > 1 and $page == null) {
             $page = 1;
         }
         if ($page > $nbMaxPage) {
@@ -93,8 +93,7 @@ class GetPhonesResolver
             $phones['phones'] = $this->phoneRepository->findBy(
                 [],
                 [],
-                GetPhonesResolver::LIMIT_PER_PAGE,
-                $page * GetPhonesResolver::LIMIT_PER_PAGE
+                GetPhonesResolver::LIMIT_PER_PAGE
             );
         } else {
             $phones = $this->phoneRepository->findBy([], [], GetPhonesResolver::LIMIT_PER_PAGE);
