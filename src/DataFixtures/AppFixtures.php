@@ -41,18 +41,18 @@ class AppFixtures extends Fixture
         ];
 
         $phones = [
-            [
-                'name' => 'P8',
-            ],
-            [
-                'name' => 'SE8',
-            ],
-            [
-                'name' => 'iphone45',
-            ],
-            [
-                'name' => '3310',
-            ],
+            'P8',
+            'SE8',
+            'iphone45',
+            '3310',
+            'dsfsdf',
+            'sdfsdfsdf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdfdsf',
+            'sdfsdfsdfsdf',
+            'sdfsdfsdf',
+            'sdfsdfsdfsdf'
         ];
 
         $clients = [
@@ -86,6 +86,7 @@ class AppFixtures extends Fixture
             $manager->persist($supplier);
         }
         $manager->flush();
+        /** @var Supplier $allSupplier */
         $allSupplier = $manager->getRepository(Supplier::class)->findAll();
         $nbSupp = count($allSupplier);
         foreach ($specifications as $value) {
@@ -108,12 +109,13 @@ class AppFixtures extends Fixture
             $manager->persist($specification);
         }
         $manager->flush();
+        /** @var Specification $allSpec */
         $allSpec = $manager->getRepository(Specification::class)->findAll();
         $nbSpec = count($allSpec);
 
         foreach ($phones as $value) {
             $phone = new Phone();
-            $phone->setName($value['name']);
+            $phone->setName($value);
             $phone->setWeight(rand(50, 500));
             $phone->setHeight(rand(100, 500));
             $phone->setWidth(rand(100, 500));
@@ -136,7 +138,7 @@ class AppFixtures extends Fixture
         $allClient = $manager->getRepository(Client::class)->findAll();
         $nbClient = count($allClient);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
                 $user = new EndUser();
                 $user->setEmail($faker->email);
                 $user->setFistName($faker->firstName);

@@ -62,7 +62,8 @@ nelmio_api_doc:
                                 application/json:
                             examples:
                                 value: >-
-                                    {"type":"https:\/\/tools.ietf.org\/html\/rfc2616#section-10","title":"An error occurred","status":400,"detail":"Bad Request"}
+                                    {"Error":"The key \u0022username\u0022 must be provided.","Code":400},
+                                    {"Error":"Invalid JSON.","Code":400}
                         401:
                             description: 'Unauthorized'
                             content:
@@ -70,12 +71,12 @@ nelmio_api_doc:
                             examples:
                                 value: >-
                                     {"code":401,"message":"Invalid credentials."}
-                        403:
-                            description: 'Forbidden'
-                        404:
-                            description: 'Not Found'
-                        405:
-                            description: 'Method Not Allowed'
+                        ##403:
+                        ##    description: 'Forbidden'
+                        ##404:
+                        ##    description: 'Not Found'
+                        ##405:
+                        ##    description: 'Method Not Allowed'
 ########################################
 ################ Phones ################
 ########################################
@@ -93,17 +94,9 @@ nelmio_api_doc:
                             content:
                                 application/json:
                             schema:
-                                $ref: "#/definitions/Phone"
-                                examples:
-                                    '0':
-                                        value: >-
-                                            [{"name":"P8","weight":55,"height":212,"width":314,"depth":28,"supplier":{"id":228,"name":"huawei","country":"chine"}}]
-                        400:
-                            description: 'Bad Request'
+                                $ref: "#/definitions/PhoneOut"
                         401:
                             description: 'Unauthorized, JWT Token not found'
-                        403:
-                            description: 'Forbidden'
                         404:
                             description: 'Not Found'
                         405:
@@ -132,11 +125,7 @@ nelmio_api_doc:
                             content:
                                 application/json:
                             schema:
-                                $ref: "#/definitions/Phone"
-                                examples:
-                                    '0':
-                                        value: >-
-                                            [{"name":"P8","weight":115,"height":192,"width":401,"depth":30,"supplier":{"id":281,"name":"honor","country":"chine"},"specification":{"screendiagonal":4,"screenresolution":"1080x720","typeofscreen":"cathode","processor":"i9","ram":2,"internalmemory":111,"memorycard":true,"photosensor":4,"frontphotosensor":4,"batterycapacity":2711,"operatingsystem":"WindowsPhone","nfc":true,"dualsim":false,"network":"5G","other":[]},"links":{"self":"\/api\/phones\/89","list":"\/api\/phones"}}]
+                                $ref: "#/definitions/PhoneDetailsOut"
                         400:
                             description: "Bad Request"
                         404:
@@ -144,7 +133,7 @@ nelmio_api_doc:
 #######################################
 ################ Users ################
 #######################################
-            /api/users:
+            /api/clients/{client_id}/users:
                 get:
                     security:
                         -   Bearer: []
@@ -197,7 +186,7 @@ nelmio_api_doc:
                             schema:
                                 example: >-
                                     {}
-            /api/users/{id}:
+            /api/clients/{client_id}/users/{id}:
                 get:
                     security:
                         -   Bearer: []
@@ -265,7 +254,7 @@ nelmio_api_doc:
                         type: "json"
                         description: "hypermedia"
                         example: {"self":"\/api\/users\/15","posts":"\/api\/users","delete":"\/api\/users\/15"}
-            Phone:
+            PhoneOut:
                 type: "object"
                 properties:
                     id:
@@ -298,15 +287,48 @@ nelmio_api_doc:
                         example: 899
                     supplier:
                         $ref: "#/definitions/Supplier"
+                    links:
+                        type: "json"
+                        description: "hypermedia"
+                        example: {"self":"\/api\/phones","details":"\/api\/phones\/89"}
+            PhoneDetailsOut:
+                type: "object"
+                properties:
+                    name:
+                        type: "string"
+                        description: "Phone commercial name"
+                        example: "P8"
+                    weight:
+                        type: "integer"
+                        description: "Phone weight in grams"
+                        example: 120
+                    height:
+                        type: "integer"
+                        description: "Phone height in millimeter"
+                        example: 120
+                    width:
+                        type: "integer"
+                        description: "Phone width in millimeter"
+                        example: 180
+                    depth:
+                        type: "integer"
+                        description: "Phone depth millimeter"
+                        example: 4
+                    price:
+                        type: "integer"
+                        description: "Phone price in euro"
+                        example: 899
+                    supplier:
+                        $ref: "#/definitions/Supplier"
                     specification:
                         $ref: "#/definitions/Specification"
+                    links:
+                        type: "json"
+                        description: "hypermedia"
+                        example: {"self":"\/api\/phones\/93","list":"\/api\/phones"}
             Supplier:
                 type: "object"
                 properties:
-                    id:
-                        type: "integer"
-                        description: "Id of supplier"
-                        example: 24
                     name:
                         type: "string"
                         description: "The name of the company"
@@ -318,10 +340,6 @@ nelmio_api_doc:
             Specification:
                 type: "object"
                 properties:
-                    id:
-                        type: "integer"
-                        description: "Specification id"
-                        example: 2
                     screendiagonal:
                         type: "integer"
                         description: "Phone screen size in inches"
@@ -381,8 +399,7 @@ nelmio_api_doc:
                     other:
                         type: "json"
                         description: "All other specifications you need in Json format"
-                        example: >-
-                            [{"name":"P8","weight":115}]
+                        example: {"otherValue":"Jhon","test":"value"}
             Client:
                 type: "object"
                 properties:

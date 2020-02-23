@@ -11,61 +11,43 @@
 
 namespace App\Actions;
 
-use App\Repository\ClientRepository;
-use App\Repository\EndUserRepository;
+use App\Actions\Domain\EndUsers\DeleteEndUserResolver;
 use App\Responder\ResponderJson;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class DeleteEndUser
  * @package App\Actions
- * @Route(name="delete_users", path="/api/users/{id}", methods={"DELETE"})
+ * @Route(name="delete_users", path="/api/clients/{client_id}/users/{id}", methods={"DELETE"})
  */
 class DeleteEndUser
 {
-    /** @var SerializerInterface */
-    private $serializer;
     /** @var ResponderJson */
-        private $responder;
-    /** @var ClientRepository */
-        private $clientRepository;
-    /** @var EndUserRepository */
-        private $endUserRepository;
-    /** @var EntityManagerInterface */
-        private $em;
+    private $responder;
+    /** @var DeleteEndUserResolver */
+    private $resolver;
+
     /**
      * DeleteEndUser constructor.
-     * @param SerializerInterface $serializer
      * @param ResponderJson $responder
-     * @param ClientRepository $clientRepository
-     * @param EndUserRepository $endUserRepository
-     * @param EntityManagerInterface $em
+     * @param DeleteEndUserResolver $resolver
      */
     public function __construct(
-        SerializerInterface $serializer,
         ResponderJson $responder,
-        ClientRepository $clientRepository,
-        EndUserRepository $endUserRepository,
-        EntityManagerInterface $em
-    ) {
-        $this->serializer = $serializer;
+        DeleteEndUserResolver $resolver
+    )
+    {
         $this->responder = $responder;
-        $this->clientRepository = $clientRepository;
-        $this->endUserRepository = $endUserRepository;
-        $this->em = $em;
+        $this->resolver = $resolver;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, UserInterface $client)
     {
-        //todo: controle de l'utilisateur if()
         $responder = $this->responder;
-        $endUserToDelete = $this->endUserRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        $this->em->remove($endUserToDelete);
-        $this->em->flush();
+        $this->resolver->resolve($request, $client);
         return $responder(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
     }
 }

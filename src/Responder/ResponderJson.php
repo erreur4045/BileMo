@@ -24,4 +24,14 @@ class ResponderJson
     ) {
         return new JsonResponse($data, $status, $header);
     }
+
+    public static function response(
+        $data,
+        $status = Response::HTTP_OK,
+        $header = ['Content-Type' => 'application/json'],
+        $cachable = null
+    )
+    {
+        return new JsonResponse($data, $status, $header);
+    }
 }

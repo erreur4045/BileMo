@@ -11,58 +11,54 @@
 
 namespace App\Actions;
 
-use App\Entity\EndUser;
-use App\Repository\ClientRepository;
+use App\Actions\Domain\EndUsers\AddEndUserResolver;
 use App\Responder\ResponderJson;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class PostEnduser
  * @package App\Actions
- * @Route(name="post_user", path="api/users", methods={"POST"})
+ * @Route(name="post_user", path="api/clients/{client_id}/users", methods={"POST"})
  */
 class PostEnduser
 {
     /** @var SerializerInterface */
-    private $serializer;
+        private $serializer;
     /** @var ResponderJson */
         private $responder;
-    /** @var ClientRepository */
-        private $clientRepository;
-    /** @var EntityManagerInterface */
-        private $em;
+    /** @var TokenStorageInterface */
+        private $client;
+    /** @var AddEndUserResolver */
+        private $resolver;
+
     /**
      * PostEnduser constructor.
      * @param SerializerInterface $serializer
      * @param ResponderJson $responder
-     * @param ClientRepository $clientRepository
-     * @param EntityManagerInterface $em
+     * @param TokenStorageInterface $client
+     * @param AddEndUserResolver $resolver
      */
     public function __construct(
         SerializerInterface $serializer,
         ResponderJson $responder,
-        ClientRepository $clientRepository,
-        EntityManagerInterface $em
+        TokenStorageInterface $client,
+        AddEndUserResolver $resolver
     ) {
         $this->serializer = $serializer;
         $this->responder = $responder;
-        $this->clientRepository = $clientRepository;
-        $this->em = $em;
+        $this->client = $client;
+        $this->resolver = $resolver;
     }
+
 
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $client = $this->clientRepository->findOneBy(['id' => $request->attributes->get('id')]);
-        /** @var EndUser $endUserUnserialised */
-        $endUserUnserialised = $this->serializer->deserialize($request->getContent(), EndUser::class, 'json');
-        $endUserUnserialised->setClient($client);
-        $this->em->persist($endUserUnserialised);
-        $this->em->flush();
-        return $responder(null, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        $inputdata = $this->resolver->resolve($request);
+        return $responder($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 }
