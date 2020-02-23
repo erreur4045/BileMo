@@ -23,6 +23,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class DeleteEndUserResolver
+ * @package App\Actions\Domain\EndUsers
+ */
 class DeleteEndUserResolver
 {
     /** @var SerializerInterface */
@@ -58,6 +62,11 @@ class DeleteEndUserResolver
         $this->endUserRepo = $endUserRepo;
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $client
+     * @throws Exception
+     */
     public function resolve(Request $request, UserInterface $client)
     {
         if ($this->storage->getToken()->getUser() == null or (int)$request->get('client_id') != $client->getId()) {
