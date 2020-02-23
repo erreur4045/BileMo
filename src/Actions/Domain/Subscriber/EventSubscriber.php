@@ -52,8 +52,10 @@ class EventSubscriber implements EventSubscriberInterface
     {
         if ($event->getThrowable()->getCode())
             $code = $event->getThrowable()->getCode();
+        elseif ($event->getThrowable()->getStatusCode())
+            $code = $event->getThrowable()->getStatusCode();
         else
-            $code = 500;
+            $code = 404;
 
         $message = [
             'message' => $event->getThrowable()->getMessage()
