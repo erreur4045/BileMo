@@ -29,6 +29,13 @@ nelmio_api_doc:
                             description: 'Success'
                             content:
                                 application/json:
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value: 
+                                    {"message":"No route found for \u0022PATCH \/api\/doc.json\u0022: Method Not Allowed (Allow: GET)","code":405}
             /api/login_check:
                 post:
                     summary: Allows to retrieve a valid token
@@ -54,29 +61,33 @@ nelmio_api_doc:
                             content:
                                 application/json:
                             examples:
-                                    value: >-
+                                    value:
                                         {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODE4ODI0MzUsImV4cCI6MTYzMTg4MjQzNSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZGFydHkifQ._JenTzrcQl8Wg2hNjZXyuxNbRhkN-I47amJcGEUcmxVpz6jGAbfPgmK6OdciO-fH2NI6dUt4uf0VxZGmcvbjXnPZiSOr-Z1FR5XeC0-siW-Govu4IJHtQd_6VT7XLZDOv9PTlN_gTU_UDC-r4JDMm6-xOoVX46eyT_IGUtCtmZDcv_bENul80Xs2C70MsNi7ETjz9-gp_j1HAgEKU62mX6uisKPE-QPqUkBACw1jDLE9yUVHjlkmYga-vhZ8bpv0UrwJymdEYjT38kkdJuDZ1wcWVovst5dpB820hK8HvRGp2_Yo642g7Bhvk-v-QDxZz52BLHfG4NitmhzKeWzyAWAlESy4VqwOeImY7ummvmg2nS5QJXQgJ1YpnYKazebHsWB98gCGHjLGj2-5ewI15wokz6MaQejQWpTmTsduEWqxxhwgmvkPtNAMfDtarBkYWXC34cvCk3jKuVHrUxli0VcBRHYEbh6bzasoDhUUQSgoI8a2VI767g9l4SHhT66aiZpA9CTOptB0RPN4B_UqWqKOdD509JBhDsHqP1TYjfASji9oMQ6hDs66L1_LAsJiJfTTObK-V74K2vMhF7uVIsUcK0Jx8RTGC5F4Q4ibC02NXWxq6G-yWLSKEa0wj_TpoBE0Jp2IG4CaCq2aoVvos3YAfKFJR-atY4WZNTNbs3A"}
                         400:
                             description: 'Bad Request'
                             content:
                                 application/json:
                             examples:
-                                value: >-
-                                    {"Error":"The key \u0022username\u0022 must be provided.","Code":400},
-                                    {"Error":"Invalid JSON.","Code":400}
+                                username missing:
+                                    {"Error":"The key \u0022username\u0022 must be provided."}
+                                password missing:
+                                    {"Error":"The key \u0022password\u0022 must be provided."}
+                                other:
+                                    {"Error":"Invalid JSON."}
                         401:
                             description: 'Unauthorized'
                             content:
                                 application/json:
                             examples:
-                                value: >-
+                                value:
                                     {"code":401,"message":"Invalid credentials."}
-                        ##403:
-                        ##    description: 'Forbidden'
-                        ##404:
-                        ##    description: 'Not Found'
-                        ##405:
-                        ##    description: 'Method Not Allowed'
+                        404:
+                            description: 'Not found'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No content, request seems empty or header Content-Type missing","code":404}
 ########################################
 ################ Phones ################
 ########################################
@@ -90,18 +101,38 @@ nelmio_api_doc:
                     description: Auto generated using Swagger Inspector
                     responses:
                         200:
-                            description: 'Success: Return list of all phones'
+                            description: 'Success: Return list of all phones with paginate if nessesary'
                             content:
                                 application/json:
                             schema:
                                 $ref: "#/definitions/PhoneOut"
+                        400:
+                            description: 'Bad Request'
+                            content:
+                                application/json:
+                            examples:
+                                paginate:
+                                    {"message":"The requested page does not exist, last page is api\/phones?page=XX","code":400}
+                                query params:
+                                    {"message":"Query param \u0022page\u0022 doesn\u0027t existe, parameters total exceeds 1, param isn't an integer","code":400}
                         401:
                             description: 'Unauthorized, JWT Token not found'
-                        404:
-                            description: 'Not Found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
                         405:
                             description: 'Method Not Allowed'
-
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022POST \/api\/phones\u0022: Method Not Allowed (Allow: GET)","code":405}
             /api/phones/{id}:
                 get:
                     security:
@@ -121,15 +152,43 @@ nelmio_api_doc:
                           type: "integer"
                     responses:
                         200:
-                            description: "successful operation"
+                            description: "Successful"
                             content:
                                 application/json:
                             schema:
                                 $ref: "#/definitions/PhoneDetailsOut"
                         400:
                             description: "Bad Request"
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"The parameter is not valid, a value of type int is requested.","code":400}
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
                         404:
                             description: "Phone not found"
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"Phone was not found, check your request","code":404}
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022PUT \/api\/phones\/133\u0022: Method Not Allowed (Allow: GET)","code":405}
 #######################################
 ################ Users ################
 #######################################
@@ -140,7 +199,7 @@ nelmio_api_doc:
                     summary: "Allows you to retrieve all users."
                     tags:
                         - About Users
-                    description: "Allows you to retrieve all users."
+                    description: "Allows you to retrieve all users with paginate if nessesary."
                     responses:
                         200:
                             description: "Success: Return list of all users"
@@ -148,12 +207,34 @@ nelmio_api_doc:
                                 application/json:
                             schema:
                                 type: "object"
-                                ####demander comment le sortir de model####
-                                $ref: "#/definitions/Users"
+                                $ref: "#/definitions/UsersListOut"
                         400:
                             description: 'Bad Request'
+                            content:
+                                application/json:
+                            examples:
+                                paginate:
+                                    {"message":"The requested page does not exist, last page is \/api\/clients\/74\/users?page=4","code":400}
                         401:
                             description: 'Unauthorized, JWT Token not found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
+                                permission:
+                                    {"message":"You can\u0027t access these resources.","code":401}
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022COPY \/api\/clients\/74\/users\u0022: Method Not Allowed (Allow: GET, POST)","code":405}
                 post:
                     security:
                         -   Bearer: []
@@ -184,8 +265,46 @@ nelmio_api_doc:
                             content:
                                 application/json:
                             schema:
-                                example: >-
-                                    {}
+                                example: 
+                                    {"url":"\/api\/clients\/XX\/users\/XXX"}
+                        400:
+                            description: 'Bad Request'
+                            content:
+                                application/json:
+                            examples:
+                                propertie(s) missing:
+                                    {"message":{"errors":["lastname =\u003E This value should not be blank.","fistname =\u003E This value should not be blank.","email =\u003E This value should not be blank."]},"code":400}
+                                email format:
+                                    {"message":{"errors":["email =\u003E The email \u0027\u0022test\u0022\u0027 is not a valid email."]},"code":400}
+                                email exist:
+                                    {"message":"This email already exists for another user, please change it.","code":400}
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
+                                permission:
+                                    {"message":"You can\u0027t add resources.","code":401}
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022PUT \/api\/clients\/dfsf\/users\u0022: Method Not Allowed (Allow: GET, POST)","code":405}
+                        409:
+                            description: 'Conflict'
+                            content:
+                                application/json:
+                            example:
+                                email exist:
+                                    {"message":"This email already exists for another user, please change it.","code":409}
             /api/clients/{client_id}/users/{id}:
                 get:
                     security:
@@ -201,7 +320,41 @@ nelmio_api_doc:
                                 application/json:
                             schema:
                                 type: "object"
-                                $ref: "#/definitions/User"
+                                $ref: "#/definitions/UserOut"
+                        400:
+                            description: 'Bad Request'
+                            content:
+                                application/json:
+                            examples:
+                                query:
+                                    {"message":"The parameter is not valid, a value of type int is requested.","code":400}
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
+                                permission:
+                                    {"message":"You can\u0027t access these resources.","code":401}
+                        404:
+                            description: "User not found"
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"User was not found, check your request","code":404}
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022PUT \/api\/clients\/74\/users\/774\u0022: Method Not Allowed (Allow: DELETE, GET)","code":405}
                 delete:
                     security:
                         -   Bearer: []
@@ -212,11 +365,45 @@ nelmio_api_doc:
                     responses:
                         204:
                             description: "User was deleted successfully."
+                        400:
+                            description: "Bad Request"
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"The parameter is not valid, a value of type int is requested.","code":400}
+                        401:
+                            description: 'Unauthorized, JWT Token not found'
+                            content:
+                                application/json:
+                            examples:
+                                token missing:
+                                    {"code":401,"message":"JWT Token not found"}
+                                token invalid:
+                                    {"code":401,"message":"Invalid JWT Token"}
+                                token expired:
+                                    {"code":401,"message":"Expired JWT Token"}
+                                unauthorized:
+                                    {"message":"You don\u0027t have the permissions for this resource.","code":401}
+                        404:
+                            description: "User not found"
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"User was not found, check your request","code":404}
+                        405:
+                            description: 'Method Not Allowed'
+                            content:
+                                application/json:
+                            examples:
+                                value:
+                                    {"message":"No route found for \u0022PUT \/api\/clients\/76\/users\/773\u0022: Method Not Allowed (Allow: DELETE, GET)","code":405}
 #########################################
 ################ Definitions ############
 #########################################
         definitions:
-            Users:
+            UsersListOut:
                 type: "object"
                 properties:
                     id:
@@ -227,11 +414,11 @@ nelmio_api_doc:
                         type: "string"
                         description: "User email value"
                         example: "jmarques@hubert.com"
-                    _href:
+                    links:
                         type: "json"
                         description: "hypermedia"
                         example: {"self":"\/api\/users","posts":"\/api\/users","delete":"\/api\/users\/15","details":"\/api\/users\/15"}
-            User:
+            UserOut:
                 type: "object"
                 properties:
                     id:
@@ -250,7 +437,7 @@ nelmio_api_doc:
                         type: "string"
                         description: "Firstname of user"
                         example: "Dudu"
-                    _href:
+                    links:
                         type: "json"
                         description: "hypermedia"
                         example: {"self":"\/api\/users\/15","posts":"\/api\/users","delete":"\/api\/users\/15"}
@@ -400,78 +587,3 @@ nelmio_api_doc:
                         type: "json"
                         description: "All other specifications you need in Json format"
                         example: {"otherValue":"Jhon","test":"value"}
-            Client:
-                type: "object"
-                properties:
-                    id:
-                        type: "integer"
-                        description: "Client id"
-                        example: 24
-                    username:
-                        type: "string"
-                        description: "Client name"
-                        example: "Darty"
-                    password:
-                        type: "string"
-                        description: "Client password"
-                    firm:
-                        type: "string"
-                        description: "Name of company"
-                        example: "Darty inc."
-            ClientLogin:
-                type: "array"
-                properties:
-                    username:
-                        type: "string"
-                        description: "Yours Username"
-                        example: "Darty"
-                    password:
-                        type: "string"
-                        description: "Yours Password"
-                        example: "123456"
-            EndUser:
-                type: "object"
-                properties:
-                    id:
-                        type: "integer"
-                        description: "EndUser id"
-                        example: 125
-                    lastname:
-                        type: "string"
-                        description: "Lastname of user"
-                        example: "Jean-Luc"
-                    fistname:
-                        type: "string"
-                        description: "Firstname of user"
-                        example: "Dudu"
-                    email:
-                        type: "string"
-                        description: "Email of user"
-                        example: "jean-luc.dupont@localhost.com"
-                    client:
-                        $ref: "#/definitions/Client"
-        components:
-        links:
-            Users:
-            # returns array of '#/components/schemas/repository'
-                operationId: getId
-                parameters:
-                    id: $response.body#/id
-            returnformat:
-                getUsers:
-                    type: "object"
-                    properties:
-                        id:
-                            type: "integer"
-                            description: "User id"
-                            example: 25
-                        email:
-                            type: "string"
-                            description: "User email value"
-                            example: "jmarques@hubert.com"
-
-            links:
-                servername:
-                    type: "string"
-        servers:
-            - url: https://api/

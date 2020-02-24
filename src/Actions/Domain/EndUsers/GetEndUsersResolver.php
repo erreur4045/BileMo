@@ -42,7 +42,7 @@ class GetEndUsersResolver
         $connectedClient = (int)$client->getId();
         $clientId = (int)$request->get('client_id');
         if ($connectedClient != $clientId) {
-            throw new ForbiddenOverwriteException('You can\'t access these resources.', Response::HTTP_FORBIDDEN, null);
+            throw new ForbiddenOverwriteException('You can\'t access these resources.', Response::HTTP_UNAUTHORIZED, null);
         }
         $page = $request->query->get('page');
         $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
@@ -109,7 +109,7 @@ class GetEndUsersResolver
             $endUsers = $this->endUserRepository->findBy([], [], GetEndUsersResolver::LIMIT_PER_PAGE);
         }
 
-        $endUsersNormalized =  $this->serializer->normalize($endUsers, 'json', ['groups' => 'phone_list']);
+        $endUsersNormalized =  $this->serializer->normalize($endUsers, 'json', ['groups' => 'list_users']);
         return $endUsersNormalized;
     }
 }

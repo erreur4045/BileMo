@@ -23,7 +23,6 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     public function normalize($object, $format = null, array $context = array()): array
     {
         $data = $this->normalizer->normalize($object, $format, $context);
-
         if ($context['groups'] == 'list_users') {
             $data = [
                 'id' => $object->getId(),

@@ -53,6 +53,7 @@ class Client implements UserInterface, \JsonSerializable
 
     public function __construct()
     {
+
         $this->enduser = new ArrayCollection();
     }
 

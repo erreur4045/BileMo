@@ -11,12 +11,14 @@
 
 namespace App\Actions\Domain\Subscriber;
 
-use App\Actions\Domain\Exception\InputExceptions;
+use App\Exception\InputExceptions;
 use App\Responder\ResponderJson;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
@@ -50,6 +52,7 @@ class EventSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event)
     {
+       // dd($event->getThrowable());
         if ($event->getThrowable()->getCode()) {
             $code = $event->getThrowable()->getCode();
         } elseif (method_exists($event->getThrowable(), 'getStatusCode') == true) {
@@ -57,16 +60,35 @@ class EventSubscriber implements EventSubscriberInterface
         } else {
             $code = 404;
         }
-
         $message = [
-            'message' => $event->getThrowable()->getMessage()
+            'message' => $event->getThrowable()->getMessage(),
+            'code' => $code
         ];
         switch (get_class($event->getThrowable())) {
             case InputExceptions::class:
-                $message = $event->getThrowable()->getErrors();
+                $message['message'] = $event->getThrowable()->getErrors();
+                $message['code'] = 400;
+                $code = 400;
                 break;
-            case NotEncodableValueException ::class:
-                $message = 'No content, request seems empty';
+            case MethodNotAllowedHttpException::class:
+                $message['message'] = $event->getThrowable()->getMessage();
+                $message['code'] = 405;
+                break;
+            case NotEncodableValueException::class:
+                if (strpos($event->getThrowable()->getMessage(), 'Syntax')){
+                    $message['message'] = 'No content, request seems empty, header Content-Type missing, Synxtax error';
+                }
+                else
+                    $message['message'] = $event->getThrowable()->getMessage();
+                $message['code'] = 400;
+                $code = 400;
+                break;
+            case NotFoundHttpException::class:
+                if (strpos($event->getThrowable()->getMessage(), 'controller'))
+                    $message['message'] = 'No content, request seems empty or header Content-Type missing';
+                else
+                    $message['message'] = $event->getThrowable()->getMessage();
+                $message['code'] = 404;
                 break;
             case HttpException::class:
                 break;

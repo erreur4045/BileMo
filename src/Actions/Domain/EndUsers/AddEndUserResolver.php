@@ -63,6 +63,7 @@ class AddEndUserResolver
 
     public function resolve(Request $request)
     {
+        //dd($this->storage->getToken()->getUser());
         if ($this->storage->getToken()->getUser() == null) {
             throw new AccessDeniedHttpException('You can\'t add an user');
         }
@@ -106,7 +107,7 @@ class AddEndUserResolver
         if ($this->manager->getRepository(EndUser::class)->findOneBy(['email' => $email])) {
             throw new Exception(
                 'This email already exists for another user, please change it.',
-                Response::HTTP_BAD_REQUEST,
+                Response::HTTP_CONFLICT,
                 null
             );
         }

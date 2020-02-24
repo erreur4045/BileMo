@@ -46,6 +46,6 @@ class GetPhones
     {
         $responder = $this->responder;
         $data =  $this->resolver->resolve($request);
-        return $responder->response($data, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
+        return $responder->response($data, Response::HTTP_OK, ['Content-Type' => 'application/json'], false);
     }
 }
