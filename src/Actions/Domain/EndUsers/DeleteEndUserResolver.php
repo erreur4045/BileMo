@@ -31,15 +31,15 @@ class DeleteEndUserResolver
 {
     /** @var SerializerInterface */
     private $serializer;
-/** @var TokenStorageInterface */
-    private $storage;
-/** @var EntityManagerInterface */
-    private $manager;
-/** @var ValidatorInterface */
-    private $validator;
-/** @var EndUserRepository */
-    private $endUserRepo;
-/**
+    /** @var TokenStorageInterface */
+        private $storage;
+    /** @var EntityManagerInterface */
+        private $manager;
+    /** @var ValidatorInterface */
+        private $validator;
+    /** @var EndUserRepository */
+        private $endUserRepo;
+    /**
      * DeleteEndUserResolver constructor.
      * @param SerializerInterface $serializer
      * @param TokenStorageInterface $storage

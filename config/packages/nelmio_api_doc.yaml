@@ -200,6 +200,12 @@ nelmio_api_doc:
                     tags:
                         - About Users
                     description: "Allows you to retrieve all users with paginate if nessesary."
+                    parameters:
+                        - name: "client_id"
+                          in: "path"
+                          description: "ID of client"
+                          required: true
+                          type: "integer"
                     responses:
                         200:
                             description: "Success: Return list of all users"
@@ -243,6 +249,11 @@ nelmio_api_doc:
                         - About Users
                     description: "Allows you to post a new user."
                     parameters:
+                        - name: "client_id"
+                          in: "path"
+                          description: "ID of client"
+                          required: true
+                          type: "integer"
                         - in: "body"
                           name: "body"
                           schema:
@@ -313,6 +324,17 @@ nelmio_api_doc:
                     tags:
                         - About Users
                     description: "Allows you to retrieve a single user."
+                    parameters:
+                        - name: "client_id"
+                          in: "path"
+                          description: "ID of client"
+                          required: true
+                          type: "integer"
+                        - name: "id"
+                          in: "path"
+                          description: "ID of user"
+                          required: true
+                          type: "integer"
                     responses:
                         200:
                             description: "Success"
@@ -362,6 +384,17 @@ nelmio_api_doc:
                     tags:
                         - About Users
                     description: "Allows you to delete a user."
+                    parameters:
+                        - name: "client_id"
+                          in: "path"
+                          description: "ID of client"
+                          required: true
+                          type: "integer"
+                        - name: "id"
+                          in: "path"
+                          description: "ID of user"
+                          required: true
+                          type: "integer"
                     responses:
                         204:
                             description: "User was deleted successfully."

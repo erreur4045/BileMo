@@ -63,7 +63,6 @@ class AddEndUserResolver
 
     public function resolve(Request $request)
     {
-        //dd($this->storage->getToken()->getUser());
         if ($this->storage->getToken()->getUser() == null) {
             throw new AccessDeniedHttpException('You can\'t add an user');
         }

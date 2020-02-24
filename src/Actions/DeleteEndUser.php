@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class DeleteEndUser
  * @package App\Actions
- * @Route(name="delete_users", path="/api/clients/{client_id}/users/{id}", methods={"DELETE"})
+ * @Route(name="delete_users", path="/api/clients/{client_id<\d+>}/users/{id<\d+>}", methods={"DELETE"})
  */
 class DeleteEndUser
 {

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class GetPhones
  * @package App\Actions
- * @Route(name="get_phone", path="/api/phones/{id}", methods={"GET"})
+ * @Route(name="get_phone", path="/api/phones/{id<\d+>}", methods={"GET"})
  */
 class GetPhoneWithDetails
 {

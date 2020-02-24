@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class GetEnduserByClient
  * @package App\Actions
- * @Route(name="get_user", path="/api/clients/{client_id}/users/{id}", methods={"GET"})
+ * @Route(name="get_user", path="/api/clients/{client_id<\d+>}/users/{id<\d+>}", methods={"GET"})
  */
 class GetEndUser
 {
