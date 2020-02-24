@@ -88,7 +88,7 @@ class GetEndUsersResolver
                 ) . $nextPage;
             }
             $endUsers['users'] = $this->endUserRepository->findBy(
-                [],
+                ['client' => $clientId],
                 [],
                 GetEndUsersResolver::LIMIT_PER_PAGE,
                 $page * GetEndUsersResolver::LIMIT_PER_PAGE - GetEndUsersResolver::LIMIT_PER_PAGE
@@ -101,7 +101,7 @@ class GetEndUsersResolver
                 'last' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage,
             ];
             $endUsers['users'] = $this->endUserRepository->findBy(
-                [],
+                ['client' => $clientId],
                 [],
                 GetEndUsersResolver::LIMIT_PER_PAGE
             );

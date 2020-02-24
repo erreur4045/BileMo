@@ -68,7 +68,7 @@ class GetEndUserResolver
                     'client' => $request->attributes->get('client_id')
                 ]
             ) == false
-            or $client->getId() != $request->attributes->get('client_id')
+            or $client->getId() != (int)$request->attributes->get('client_id')
         ) {
             throw new AccessDeniedHttpException(
                 'You don\'t have the permissions for this resource.',
