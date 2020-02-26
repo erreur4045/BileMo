@@ -75,19 +75,20 @@ class EventSubscriber implements EventSubscriberInterface
                 $message['code'] = 405;
                 break;
             case NotEncodableValueException::class:
-                if (strpos($event->getThrowable()->getMessage(), 'Syntax')){
+                if (strpos($event->getThrowable()->getMessage(), 'Syntax')) {
                     $message['message'] = 'No content, request seems empty, header Content-Type missing, Synxtax error';
-                }
-                else
+                } else {
                     $message['message'] = $event->getThrowable()->getMessage();
+                }
                 $message['code'] = 400;
                 $code = 400;
                 break;
             case NotFoundHttpException::class:
-                if (strpos($event->getThrowable()->getMessage(), 'controller'))
+                if (strpos($event->getThrowable()->getMessage(), 'controller')) {
                     $message['message'] = 'No content, request seems empty or header Content-Type missing';
-                else
+                } else {
                     $message['message'] = $event->getThrowable()->getMessage();
+                }
                 $message['code'] = 404;
                 break;
             case HttpException::class:

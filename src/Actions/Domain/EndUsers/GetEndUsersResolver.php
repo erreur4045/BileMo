@@ -42,7 +42,11 @@ class GetEndUsersResolver
         $connectedClient = (int)$client->getId();
         $clientId = (int)$request->get('client_id');
         if ($connectedClient != $clientId) {
-            throw new ForbiddenOverwriteException('You can\'t access these resources.', Response::HTTP_UNAUTHORIZED, null);
+            throw new ForbiddenOverwriteException(
+                'You can\'t access these resources.',
+                Response::HTTP_UNAUTHORIZED,
+                null
+            );
         }
         $page = $request->query->get('page');
         $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
