@@ -24,4 +24,5 @@
 .phpunit
 .phpunit.result.cache
 /phpunit.xml
+/maxou/
 ###< symfony/phpunit-bridge ###
