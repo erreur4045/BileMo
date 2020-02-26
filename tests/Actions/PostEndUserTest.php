@@ -18,6 +18,7 @@ class PostEndUserTest extends AbstractTestCase
     protected function setUp()
     {
         parent::setUp();
+        parent::reloadDataFixtures();
     }
 
     public function testPostUserWithoutAuth()
@@ -46,7 +47,7 @@ class PostEndUserTest extends AbstractTestCase
 
     public function testPostUserWithAuthSameUserTwice()
     {
-        $response = $this->request(
+        $this->request(
             'POST',
             '/api/clients/1/users',
             'darty',

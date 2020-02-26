@@ -12,6 +12,7 @@ namespace App\Tests;
 
 
 use App\DataFixtures\AppFixtures;
+use App\DataFixtures\AppFixturesLts;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -48,7 +49,6 @@ abstract class AbstractTestCase extends WebTestCase
         $schemaTool = new SchemaTool($this->manager);
         $schemaTool->dropDatabase($this->manager->getMetadataFactory()->getAllMetadata());
         $schemaTool->createSchema($this->manager->getMetadataFactory()->getAllMetadata());
-        self::reloadDataFixtures();
     }
 
     /**
@@ -94,14 +94,14 @@ abstract class AbstractTestCase extends WebTestCase
         return $responseContent['token'];
     }
 
-    private static function reloadDataFixtures(): void
+    protected static function reloadDataFixtures(bool $lts = false): void
     {
         $kernel = static::createKernel();
         $kernel->boot();
         $entityManager = $kernel->getContainer()->get('doctrine')->getManager();
 
         $loader = new Loader();
-        foreach (self::getFixtures() as $fixture) {
+        foreach (self::getFixtures($lts) as $fixture) {
             $loader->addFixture($fixture);
         }
 
@@ -110,10 +110,17 @@ abstract class AbstractTestCase extends WebTestCase
         $executor = new ORMExecutor($entityManager, $purger);
         $executor->execute($loader->getFixtures());
     }
-    private static function getFixtures(): iterable
+
+    private static function getFixtures($lts): iterable
     {
-        return [
-            new AppFixtures(),
-        ];
+        if ($lts == true) {
+            return [
+                new AppFixturesLts(),
+            ];
+        } else {
+            return [
+                new AppFixtures(),
+            ];
+        }
     }
 }

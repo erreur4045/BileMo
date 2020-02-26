@@ -13,12 +13,13 @@ namespace App\Tests\Actions;
 
 use App\Tests\AbstractTestCase;
 
-class GetPhonesTest extends AbstractTestCase
+class GetPhonesUnpaginatedTestTest extends AbstractTestCase
 {
     protected function setUp()
     {
         parent::setUp();
-        parent::reloadDataFixtures();
+        parent::reloadDataFixtures(true);
+
     }
 
     public function testGetListPhones()
@@ -28,20 +29,12 @@ class GetPhonesTest extends AbstractTestCase
         static::assertEquals(200, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);
         static::assertIsArray($content,"OK" );
-        static::assertArrayHasKey('phones',$content);
-        static::assertArrayHasKey('pagination',$content);
-        static::assertArrayHasKey('id',$content['phones'][0]);
-        static::assertArrayHasKey('name',$content['phones'][0]);
-        static::assertArrayHasKey('price',$content['phones'][0]);
-        static::assertArrayHasKey('width',$content['phones'][0]);
-    }
-
-    public function testGetListPhonesOnExsistingPage()
-    {
-        $this->clientAPI->followRedirects(true);
-        $response = $this->request('GET', '/api/phones?page=1', 'darty', 'testpass');
-        static::assertEquals(200, $response->getStatusCode());
-        static::assertIsArray(json_decode($response->getContent(), true),"OK" );
+        static::assertArrayNotHasKey('phones',$content);
+        static::assertArrayNotHasKey('pagination',$content);
+        static::assertArrayHasKey('id',$content[0]);
+        static::assertArrayHasKey('name',$content[0]);
+        static::assertArrayHasKey('price',$content[0]);
+        static::assertArrayHasKey('width',$content[0]);
     }
 
     public function testGetListPhonesOnNoneExsistingPage()
