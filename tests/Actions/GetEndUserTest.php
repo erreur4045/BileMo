@@ -18,6 +18,7 @@ class GetEndUserTest extends AbstractTestCase
     protected function setUp()
     {
         parent::setUp();
+        parent::reloadDataFixtures();
     }
 
     public function testGetUserWithoutAuth()

@@ -18,6 +18,7 @@ class GetPhoneWithDetailsTest extends AbstractTestCase
     protected function setUp()
     {
         parent::setUp();
+        parent::reloadDataFixtures();
     }
 
     public function testGetPhoneWithoutAuth()

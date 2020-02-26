@@ -18,6 +18,7 @@ class DeleteEndUserTest extends AbstractTestCase
     protected function setUp()
     {
         parent::setUp();
+        parent::reloadDataFixtures();
     }
 
     public function testDeleteUserWithoutAuth()
@@ -36,7 +37,7 @@ class DeleteEndUserTest extends AbstractTestCase
 
     public function testDeleteUserTwice()
     {
-        $response1 = $this->request('DELETE', '/api/clients/1/users/14', 'darty', 'testpass');
+        $this->request('DELETE', '/api/clients/1/users/14', 'darty', 'testpass');
         $response = $this->request('DELETE', '/api/clients/1/users/14', 'darty', 'testpass');
 
         $this->assertEquals(404, $response->getStatusCode());
