@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class GetPhones
  * @package App\Actions
- * @Route(name="get_phone", path="/api/phones/{id}", methods={"GET"})
+ * @Route(name="get_phone", path="/api/phones/{id<\d+>}", methods={"GET"})
  */
 class GetPhoneWithDetails
 {
@@ -48,6 +48,6 @@ class GetPhoneWithDetails
     {
         $responder = $this->responder;
         $phone = $this->resolver->resolve($request);
-        return $responder($phone);
+        return $responder->response($phone, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }

@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class PostEnduser
  * @package App\Actions
- * @Route(name="post_user", path="api/clients/{client_id}/users", methods={"POST"})
+ * @Route(name="post_user", path="api/clients/{client_id<\d+>}/users", methods={"POST"})
  */
 class PostEnduser
 {
@@ -59,6 +59,6 @@ class PostEnduser
     {
         $responder = $this->responder;
         $inputdata = $this->resolver->resolve($request);
-        return $responder($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        return $responder->response($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 }

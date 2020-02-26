@@ -9,7 +9,7 @@
  * FileName : ValidatorExceptionCustom.php as ValidatorExceptionCustom
  */
 
-namespace App\Actions\Domain\Exception;
+namespace App\Exception;
 
 use Exception;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -22,8 +22,8 @@ class ValidatorExceptionCustom
     {
         $data = [];
         /** @var ConstraintViolation $error */
-        foreach ($errors as $error){
-            $data['message'][] = $error->getPropertyPath() . ' => ' . $error->getMessage();
+        foreach ($errors as $error) {
+            $data['errors'][] = $error->getPropertyPath() . ' => ' . $error->getMessage();
         }
         return $data;
     }

@@ -32,7 +32,7 @@ security:
             stateless: true
 
         api:
-            pattern:   ^/api
+            pattern:   ^/api/
             stateless: true
             guard:
                 authenticators:

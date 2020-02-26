@@ -42,12 +42,16 @@ class GetEndUsersResolver
         $connectedClient = (int)$client->getId();
         $clientId = (int)$request->get('client_id');
         if ($connectedClient != $clientId) {
-            throw new ForbiddenOverwriteException('You can\'t access these resources.', Response::HTTP_FORBIDDEN, null);
+            throw new ForbiddenOverwriteException(
+                'You can\'t access these resources.',
+                Response::HTTP_UNAUTHORIZED,
+                null
+            );
         }
         $page = $request->query->get('page');
         $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
         $nbMaxPage = ceil($nbEndUsers / GetEndUsersResolver::LIMIT_PER_PAGE);
-        if ($nbMaxPage > 1 and  $page == null) {
+        if ($nbMaxPage > 1 and $page == null) {
             $page = 1;
         }
         if ($page > $nbMaxPage) {
@@ -88,7 +92,7 @@ class GetEndUsersResolver
                 ) . $nextPage;
             }
             $endUsers['users'] = $this->endUserRepository->findBy(
-                [],
+                ['client' => $clientId],
                 [],
                 GetEndUsersResolver::LIMIT_PER_PAGE,
                 $page * GetEndUsersResolver::LIMIT_PER_PAGE - GetEndUsersResolver::LIMIT_PER_PAGE
@@ -101,16 +105,15 @@ class GetEndUsersResolver
                 'last' => sprintf('/api/clients/%s/users?page=', $connectedClient) . $nbMaxPage,
             ];
             $endUsers['users'] = $this->endUserRepository->findBy(
+                ['client' => $clientId],
                 [],
-                [],
-                GetEndUsersResolver::LIMIT_PER_PAGE,
-                $page * GetEndUsersResolver::LIMIT_PER_PAGE
+                GetEndUsersResolver::LIMIT_PER_PAGE
             );
         } else {
             $endUsers = $this->endUserRepository->findBy([], [], GetEndUsersResolver::LIMIT_PER_PAGE);
         }
 
-        $endUsersNormalized =  $this->serializer->normalize($endUsers, 'json', ['groups' => 'phone_list']);
+        $endUsersNormalized =  $this->serializer->normalize($endUsers, 'json', ['groups' => 'list_users']);
         return $endUsersNormalized;
     }
 }

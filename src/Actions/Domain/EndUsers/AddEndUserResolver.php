@@ -11,10 +11,9 @@
 
 namespace App\Actions\Domain\EndUsers;
 
-use App\Actions\Domain\Exception\InputExceptions;
-use App\Actions\Domain\Exception\ValidatorExceptionCustom;
-use App\Actions\Domain\ListenerException\ListenerException;
 use App\Entity\EndUser;
+use App\Exception\InputExceptions;
+use App\Exception\ValidatorExceptionCustom;
 use App\Inputs\EndUserInputs;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -83,7 +82,15 @@ class AddEndUserResolver
         $endUser->setFistname($input->getFistname());
         $this->manager->persist($endUser);
         $this->manager->flush();
-        return ["url" => $this->url->generate('get_user', ['id' => $endUser->getId(), 'client_id' => $this->storage->getToken()->getUser()->getId()])];
+        return [
+            "url" => $this->url->generate(
+                'get_user',
+                [
+                    'id' => $endUser->getId(),
+                    'client_id' => $this->storage->getToken()->getUser()->getId()
+                ]
+            )
+        ];
     }
 
     public function validateInput(EndUserInputs $inputs)
@@ -96,7 +103,12 @@ class AddEndUserResolver
 
     public function emailExist($email)
     {
-        if ($this->manager->getRepository(EndUser::class)->findOneBy(['email' => $email]))
-            throw new Exception('This email already exists for another user, please change it.', Response::HTTP_BAD_REQUEST, null);
+        if ($this->manager->getRepository(EndUser::class)->findOneBy(['email' => $email])) {
+            throw new Exception(
+                'This email already exists for another user, please change it.',
+                Response::HTTP_CONFLICT,
+                null
+            );
+        }
     }
 }

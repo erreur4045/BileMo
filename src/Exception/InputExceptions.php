@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create by maxime
  * Date 2/22/2020
@@ -8,8 +9,7 @@
  * FileName : InputExceptions.php as InputExceptions
  */
 
-namespace App\Actions\Domain\Exception;
-
+namespace App\Exception;
 
 use Exception;
 use Throwable;
@@ -18,8 +18,7 @@ class InputExceptions extends Exception
 {
     /** @var array */
     protected $errors;
-
-    /**
+/**
      * InputExceptions constructor.
      *
      * @param array $errors

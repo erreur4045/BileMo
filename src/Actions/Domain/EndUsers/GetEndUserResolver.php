@@ -61,10 +61,20 @@ class GetEndUserResolver
                 ['Content-Type' => 'application/json']
             );
         }
-        if ($this->endUserRepository->findOneBy(['id' => $request->attributes->get('id'), 'client' => $request->attributes->get('client_id')]) == false
-        or $client->getId() != $request->attributes->get('client_id')
-        ){
-            throw new AccessDeniedHttpException('You don\'t have the permissions for this resource.', null, Response::HTTP_UNAUTHORIZED );
+        if (
+            $this->endUserRepository->findOneBy(
+                [
+                    'id' => $request->attributes->get('id'),
+                    'client' => $request->attributes->get('client_id')
+                ]
+            ) == false
+            or $client->getId() != (int)$request->attributes->get('client_id')
+        ) {
+            throw new AccessDeniedHttpException(
+                'You don\'t have the permissions for this resource.',
+                null,
+                Response::HTTP_UNAUTHORIZED
+            );
         }
         $endUserSerialised = $this->serializer->normalize($endUser, 'json', ['groups' => 'user_details_route']);
         return $endUserSerialised;

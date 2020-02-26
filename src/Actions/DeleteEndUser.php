@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class DeleteEndUser
  * @package App\Actions
- * @Route(name="delete_users", path="/api/clients/{client_id}/users/{id}", methods={"DELETE"})
+ * @Route(name="delete_users", path="/api/clients/{client_id<\d+>}/users/{id<\d+>}", methods={"DELETE"})
  */
 class DeleteEndUser
 {
@@ -38,8 +38,7 @@ class DeleteEndUser
     public function __construct(
         ResponderJson $responder,
         DeleteEndUserResolver $resolver
-    )
-    {
+    ) {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }
@@ -48,6 +47,6 @@ class DeleteEndUser
     {
         $responder = $this->responder;
         $this->resolver->resolve($request, $client);
-        return $responder(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
+        return $responder->response(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
     }
 }

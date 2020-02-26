@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- *@Route(name="get_users", path="/api/clients/{client_id}/users", methods={"GET"})
+ *@Route(name="get_users", path="/api/clients/{client_id<\d+>}/users", methods={"GET"})
  */
 class GetEndUsers
 {
@@ -59,6 +59,6 @@ class GetEndUsers
     {
         $responder = $this->responder;
         $usersNormalized = $this->resolver->resolve($request, $client);
-        return $responder($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        return $responder->response($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }

@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class GetEnduserByClient
  * @package App\Actions
- * @Route(name="get_user", path="/api/clients/{client_id}/users/{id}", methods={"GET"})
+ * @Route(name="get_user", path="/api/clients/{client_id<\d+>}/users/{id<\d+>}", methods={"GET"})
  */
 class GetEndUser
 {
@@ -56,6 +56,6 @@ class GetEndUser
     {
         $responder = $this->responder;
         $endUser = $this->resolver->resolve($request, $client);
-        return $responder($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        return $responder->response($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
     }
 }
