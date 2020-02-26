@@ -36,7 +36,7 @@ class PhoneNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     public function normalize($object, $format = null, array $context = array()): array
     {
         $data = $this->normalizer->normalize($object, $format, $context);
-        $data['links']['self'] = $this->request->getCurrentRequest()->getUri();
+        $data['links']['self'] = $this->request->getCurrentRequest()->getRequestUri();
         if ($context['groups'] == 'phone_list') {
             $data['links']['details'] = '/api/phones/' . $object->getId();
         } else {

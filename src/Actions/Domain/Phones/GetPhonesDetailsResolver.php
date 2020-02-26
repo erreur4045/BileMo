@@ -14,7 +14,6 @@ namespace App\Actions\Domain\Phones;
 use App\Repository\PhoneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -37,17 +36,6 @@ class GetPhonesDetailsResolver
 
     public function resolve(Request $request)
     {
-        if (
-            is_int((int)$request->attributes->get('id')) == false
-            or strlen($request->attributes->get('id')) != strlen((int)$request->attributes->get('id'))
-        ) {
-            throw new BadRequestHttpException(
-                'The parameter is not valid, a value of type int is requested.',
-                null,
-                Response::HTTP_BAD_REQUEST,
-                ['Content-Type' => 'application/json']
-            );
-        }
         $phone = $this->phoneRepository->find($request->attributes->get('id'));
         if ($phone == null) {
             throw new NotFoundHttpException(

@@ -5,7 +5,6 @@ namespace App\Serializer\Normalizer;
 use App\Entity\EndUser;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -35,13 +34,12 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     public function normalize($object, $format = null, array $context = array()): array
     {
-        $data = $this->normalizer->normalize($object, $format, $context);
         if ($context['groups'] == 'list_users') {
             $data = [
                 'id' => $object->getId(),
                 'email' => $object->getEmail(),
-                '_href'  => [
-                    'self' => $this->request->getCurrentRequest()->getUri(),
+                'links'  => [
+                    'self' => $this->request->getCurrentRequest()->getRequestUri(),
                     'posts' => '/api/users',
                     'delete' => sprintf('/api/clients/%s/users/%s', $this->whereIs(), $object->getId()),
                     'details' => sprintf('/api/users/%s', $object->getId())
@@ -54,7 +52,7 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
                 'lastname' => $object->getLastname(),
                 'fistname' => $object->getFistname(),
                 'links'  => [
-                    'self' => $this->request->getCurrentRequest()->getUri(),
+                    'self' => $this->request->getCurrentRequest()->getRequestUri(),
                     'posts' => sprintf('/api/clients/%s/users/', $this->whereIs()),
                     'delete' => sprintf('/api/clients/%s/users/%s', $this->whereIs(), $object->getId())
                 ]

@@ -12,12 +12,10 @@
 namespace App\Actions;
 
 use App\Actions\Domain\Phones\GetPhonesResolver;
-use App\Repository\PhoneRepository;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class GetPhones
