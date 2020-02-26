@@ -52,8 +52,8 @@ class EventSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event)
     {
-        //dd($event->getThrowable());
-        if ($event->getThrowable()->getCode()) {
+        //dd(/*$event->getRequest(),*/ $event->getThrowable());
+        if ($event->getThrowable()->getCode() and $event->getThrowable()->getCode() > 200) {
             $code = $event->getThrowable()->getCode();
         } elseif (method_exists($event->getThrowable(), 'getStatusCode') == true) {
             $code = $event->getThrowable()->getStatusCode();

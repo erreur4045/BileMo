@@ -113,8 +113,6 @@ nelmio_api_doc:
                             examples:
                                 paginate:
                                     {"message":"The requested page does not exist, last page is api\/phones?page=XX","code":400}
-                                query params:
-                                    {"message":"Query param \u0022page\u0022 doesn\u0027t existe, parameters total exceeds 1, param isn't an integer","code":400}
                         401:
                             description: 'Unauthorized, JWT Token not found'
                             content:
@@ -157,13 +155,6 @@ nelmio_api_doc:
                                 application/json:
                             schema:
                                 $ref: "#/definitions/PhoneDetailsOut"
-                        400:
-                            description: "Bad Request"
-                            content:
-                                application/json:
-                            examples:
-                                value:
-                                    {"message":"The parameter is not valid, a value of type int is requested.","code":400}
                         401:
                             description: 'Unauthorized, JWT Token not found'
                             content:
@@ -287,8 +278,6 @@ nelmio_api_doc:
                                     {"message":{"errors":["lastname =\u003E This value should not be blank.","fistname =\u003E This value should not be blank.","email =\u003E This value should not be blank."]},"code":400}
                                 email format:
                                     {"message":{"errors":["email =\u003E The email \u0027\u0022test\u0022\u0027 is not a valid email."]},"code":400}
-                                email exist:
-                                    {"message":"This email already exists for another user, please change it.","code":400}
                         401:
                             description: 'Unauthorized, JWT Token not found'
                             content:
@@ -300,8 +289,6 @@ nelmio_api_doc:
                                     {"code":401,"message":"Invalid JWT Token"}
                                 token expired:
                                     {"code":401,"message":"Expired JWT Token"}
-                                permission:
-                                    {"message":"You can\u0027t add resources.","code":401}
                         405:
                             description: 'Method Not Allowed'
                             content:
@@ -313,8 +300,8 @@ nelmio_api_doc:
                             description: 'Conflict'
                             content:
                                 application/json:
-                            example:
-                                email exist:
+                            examples:
+                                email already exists:
                                     {"message":"This email already exists for another user, please change it.","code":409}
             /api/clients/{client_id}/users/{id}:
                 get:
@@ -403,8 +390,10 @@ nelmio_api_doc:
                             content:
                                 application/json:
                             examples:
-                                value:
+                                query:
                                     {"message":"The parameter is not valid, a value of type int is requested.","code":400}
+                                value:
+                                    {"message":"User was not found, check your request","code":404}
                         401:
                             description: 'Unauthorized, JWT Token not found'
                             content:

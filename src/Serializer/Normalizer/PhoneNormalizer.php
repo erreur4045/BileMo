@@ -3,6 +3,7 @@
 namespace App\Serializer\Normalizer;
 
 use App\Entity\Phone;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -11,22 +12,31 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class PhoneNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** @var ObjectNormalizer */
     private $normalizer;
-
     /** @var RouterInterface */
     private $router;
+    /** @var RequestStack */
+    private $request;
 
-
-    public function __construct(ObjectNormalizer $normalizer, RouterInterface $router)
+    /**
+     * PhoneNormalizer constructor.
+     * @param ObjectNormalizer $normalizer
+     * @param RouterInterface $router
+     * @param RequestStack $request
+     */
+    public function __construct(ObjectNormalizer $normalizer, RouterInterface $router, RequestStack $request)
     {
         $this->normalizer = $normalizer;
         $this->router = $router;
+        $this->request = $request;
     }
+
 
     public function normalize($object, $format = null, array $context = array()): array
     {
         $data = $this->normalizer->normalize($object, $format, $context);
-        $data['links']['self'] = $_SERVER['REQUEST_URI'];
+        $data['links']['self'] = $this->request->getCurrentRequest()->getUri();
         if ($context['groups'] == 'phone_list') {
             $data['links']['details'] = '/api/phones/' . $object->getId();
         } else {

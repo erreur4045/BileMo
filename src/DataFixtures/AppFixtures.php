@@ -138,13 +138,30 @@ class AppFixtures extends Fixture
         $allClient = $manager->getRepository(Client::class)->findAll();
         $nbClient = count($allClient);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 33; $i++) {
+            $user = new EndUser();
+            $user->setEmail($faker->email);
+            $user->setFistName($faker->firstName);
+            $user->setLastName($faker->lastName);
+            $user->setClient($allClient[0]);
+            $manager->persist($user);
+        }
+
+        for ($i = 0; $i < 33; $i++) {
                 $user = new EndUser();
                 $user->setEmail($faker->email);
                 $user->setFistName($faker->firstName);
                 $user->setLastName($faker->lastName);
-                $user->setClient($allClient[rand(0, $nbClient - 1)]);
+                $user->setClient($allClient[1]);
                 $manager->persist($user);
+        }
+        for ($i = 0; $i < 34; $i++) {
+            $user = new EndUser();
+            $user->setEmail($faker->email);
+            $user->setFistName($faker->firstName);
+            $user->setLastName($faker->lastName);
+            $user->setClient($allClient[rand(0, $nbClient - 1)]);
+            $manager->persist($user);
         }
         $manager->flush();
     }
