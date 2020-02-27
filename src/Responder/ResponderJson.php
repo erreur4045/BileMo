@@ -23,7 +23,7 @@ class ResponderJson
         $cachable = null
     ) {
         $response = new JsonResponse($data, $status, $header);
-        if ($cachable) {
+        if ($cachable == true) {
             $response->setPublic()->setSharedMaxAge(300)->setMaxAge(300);
         }
         return $response;

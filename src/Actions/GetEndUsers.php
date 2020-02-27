@@ -12,7 +12,6 @@
 namespace App\Actions;
 
 use App\Actions\Domain\EndUsers\GetEndUsersResolver;
-use App\Entity\Client;
 use App\Repository\EndUserRepository;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;

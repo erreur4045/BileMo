@@ -12,12 +12,12 @@ namespace App\Tests\Actions;
 
 use App\Tests\AbstractTestCase;
 
-class GetEndUsersTest extends AbstractTestCase
+class GetEndUsersUnpaginatedTest extends AbstractTestCase
 {
     protected function setUp()
     {
         parent::setUp();
-        parent::reloadDataFixtures();
+        parent::reloadDataFixtures(true);
     }
     public function testGetUsersWithoutAuth()
     {
@@ -35,13 +35,6 @@ class GetEndUsersTest extends AbstractTestCase
     {
         $this->clientAPI->followRedirects(true);
         $response = $this->request('GET', '/api/clients/1/users?page=1', 'darty', 'testpass');
-        static::assertEquals(200, $response->getStatusCode());
-    }
-
-    public function testGetListUsersOnExsistingPage2()
-    {
-        $this->clientAPI->followRedirects(true);
-        $response = $this->request('GET', '/api/clients/1/users?page=2', 'darty', 'testpass');
         static::assertEquals(200, $response->getStatusCode());
     }
 

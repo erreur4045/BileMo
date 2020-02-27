@@ -40,7 +40,7 @@ class GetEndUsersResolver
     public function resolve(Request $request, UserInterface $client)
     {
         $connectedClient = (int)$client->getId();
-        $clientId = (int)$request->get('client_id');
+        $clientId = (int)$request->attributes->get('client_id');
         if ($connectedClient != $clientId) {
             throw new ForbiddenOverwriteException(
                 'You can\'t access these resources.',

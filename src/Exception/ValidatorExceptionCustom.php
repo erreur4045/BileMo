@@ -11,10 +11,8 @@
 
 namespace App\Exception;
 
-use Exception;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Throwable;
 
 class ValidatorExceptionCustom
 {

@@ -44,6 +44,14 @@ class GetPhonesTest extends AbstractTestCase
         static::assertIsArray(json_decode($response->getContent(), true),"OK" );
     }
 
+    public function testGetListPhonesOnExsistingPage2()
+    {
+        $this->clientAPI->followRedirects(true);
+        $response = $this->request('GET', '/api/phones?page=2', 'darty', 'testpass');
+        static::assertEquals(200, $response->getStatusCode());
+        static::assertIsArray(json_decode($response->getContent(), true),"OK" );
+    }
+
     public function testGetListPhonesOnNoneExsistingPage()
     {
         $this->clientAPI->followRedirects(true);

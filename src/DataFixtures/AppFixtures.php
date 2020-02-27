@@ -155,7 +155,7 @@ class AppFixtures extends Fixture
                 $user->setClient($allClient[1]);
                 $manager->persist($user);
         }
-        for ($i = 0; $i < 34; $i++) {
+        for ($i = 0; $i < 400; $i++) {
             $user = new EndUser();
             $user->setEmail($faker->email);
             $user->setFistName($faker->firstName);

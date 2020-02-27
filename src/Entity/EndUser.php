@@ -4,13 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EndUserRepository")
  */
-class EndUser implements \JsonSerializable
+class EndUser
 {
     /**
      * @ORM\Id()
@@ -42,10 +40,6 @@ class EndUser implements \JsonSerializable
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="enduser")
      */
     private $client;
-
-    public function __toString(): ?string
-    {
-    }
 
     /**
      * @return mixed
@@ -125,20 +119,5 @@ class EndUser implements \JsonSerializable
     public function setClient($client): void
     {
         $this->client = $client;
-    }
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize()
-    {
-
-
-
-        return ;
     }
 }
