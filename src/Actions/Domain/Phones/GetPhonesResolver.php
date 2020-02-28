@@ -47,10 +47,10 @@ class GetPhonesResolver
 
     public function resolve(Request $request)
     {
-        $page = $request->query->get('page');
+        $page = $request->query->getInt('page');
         $nbPhone = $this->manager->getRepository(Phone::class)->count([]);
         $nbMaxPage = ceil($nbPhone / GetPhonesResolver::LIMIT_PER_PAGE);
-        if ($nbMaxPage > 1 and $page == null) {
+        if ($nbMaxPage > 1 && is_null($page)) {
             $page = 1;
         }
         if ($page > $nbMaxPage) {
@@ -83,7 +83,7 @@ class GetPhonesResolver
                 GetPhonesResolver::LIMIT_PER_PAGE,
                 $page * GetPhonesResolver::LIMIT_PER_PAGE - GetPhonesResolver::LIMIT_PER_PAGE
             );
-        } elseif ($nbMaxPage > 1 and $page == 1) {
+        } elseif ($nbMaxPage > 1 and $page === 1) {
             /** Generate the layout for the first page if pagination is necessary */
             $phones['pagination'] = [
                 'current' => "api/phones?page=" . $page,
