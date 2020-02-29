@@ -15,33 +15,6 @@ Créez un web service exposant une API
 
 ## Tested with:
 - PHPUnit [more infos](https://phpunit.de/)
-
-## Install application:
-clone or download the repository into your environment. https://github.com/erreur4045/BileMo
-
-```
-$ composer install
-```
-enter your parameters database in .env file
-```
-$ php bin/console doctrine:database:create
-```
-```
-$ php bin/console doctrine:migrations:migrate
-```
-```
-$ php bin/console doctrine:fixtures:load
-```
-
-Run application in your favorite browser
-For test to retrieve a valid token call the url /login_check method POST with the following identifiers :
-
-{
-	"username": "darty",
-	"password": "testpass"
-}
-
-----------------------------
 #General
 ###GET​
 /api​/doc.json 
@@ -72,5 +45,30 @@ For test to retrieve a valid token call the url /login_check method POST with th
 
 ###DELETE
 ​/api​/clients​/{client_id}​/users​/{id} *Allows you to delete a user.*
+## Install application:
+clone or download the repository into your environment. https://github.com/erreur4045/BileMo
+
+```
+$ composer install
+```
+enter your parameters database in .env file
+```
+$ php bin/console doctrine:database:create
+```
+```
+$ php bin/console doctrine:migrations:migrate
+```
+```
+$ php bin/console doctrine:fixtures:load
+```
+
+Run application in your favorite browser
+For test to retrieve a valid token call the url /login_check method POST with the following identifiers :
+```
+{
+	"username": "darty",
+	"password": "testpass"
+}
+```
 
 # *Enjoy !!*
