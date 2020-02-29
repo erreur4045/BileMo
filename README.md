@@ -15,35 +15,35 @@ Créez un web service exposant une API
 
 ## Tested with:
 - PHPUnit [more infos](https://phpunit.de/)
-#General
-###GET​
+# General
+### GET​
 /api​/doc.json 
 *Return documentation on json format*
 
-###POST​
+### POST​
 /api​/login_check 
 *Allows to retrieve a valid token*
 
-#About Phones
+# About Phones
 
-###GET
+### GET
 ​/api​/phones *Return all phones*
 
-###GET
+### GET
 ​/api​/phones​/{id} *Find phone by ID*
 
-#About Users
+# About Users
 
-###GET
+### GET
 ​/api​/clients​/{client_id}​/users *Allows you to retrieve all users.*
 
-###POST
+### POST
 ​/api​/clients​/{client_id}​/users *Allows you to post a new user.*
 
-###GET
+### GET
 ​/api​/clients​/{client_id}​/users​/{id} *Allows you to retrieve a single user.*
 
-###DELETE
+### DELETE
 ​/api​/clients​/{client_id}​/users​/{id} *Allows you to delete a user.*
 ## Install application:
 clone or download the repository into your environment. https://github.com/erreur4045/BileMo
