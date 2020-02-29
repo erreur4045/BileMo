@@ -15,6 +15,50 @@ Créez un web service exposant une API
 
 ## Tested with:
 - PHPUnit [more infos](https://phpunit.de/)
+# General
+### GET​
+/api​/doc.json 
+
+*Return documentation on json format*
+
+### POST​
+/api​/login_check 
+
+*Allows to retrieve a valid token*
+
+# About Phones
+
+### GET
+​/api​/phones 
+
+*Return all phones*
+
+### GET
+​/api​/phones​/{id} 
+
+*Find phone by ID*
+
+# About Users
+
+### GET
+​/api​/clients​/{client_id}​/users 
+
+*Allows you to retrieve all users.*
+
+### POST
+​/api​/clients​/{client_id}​/users 
+
+*Allows you to post a new user.*
+
+### GET
+​/api​/clients​/{client_id}​/users​/{id} 
+
+*Allows you to retrieve a single user.*
+
+### DELETE
+​/api​/clients​/{client_id}​/users​/{id} 
+
+*Allows you to delete a user.*
 
 ## Install application:
 clone or download the repository into your environment. https://github.com/erreur4045/BileMo
@@ -41,44 +85,5 @@ For test to retrieve a valid token call the url /login_check method POST with th
 	"password": "testpass"
 }
 ```
-
-doc /api/doc
-
-#General
-
-GET
-​/api​/doc.json
-Return documentation on json format
-POST
-​/api​/login_check
-Allows to retrieve a valid token
-
-#About Phones
-
-###GET
-​/api​/phones
-Return all phones
-
-###GET
-​/api​/phones​/{id}
-Find phone by ID
-
-#About Users
-
-###GET
-​/api​/clients​/{client_id}​/users
-Allows you to retrieve all users.
-
-###POST
-​/api​/clients​/{client_id}​/users
-Allows you to post a new user.
-
-###GET
-​/api​/clients​/{client_id}​/users​/{id}
-Allows you to retrieve a single user.
-
-###DELETE
-​/api​/clients​/{client_id}​/users​/{id}
-Allows you to delete a user.
 
 # *Enjoy !!*
