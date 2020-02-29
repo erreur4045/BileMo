@@ -9,7 +9,7 @@
  * FileName : EventSubscriber.php as EventSubscriber
  */
 
-namespace App\Actions\Domain\Subscriber;
+namespace App\Domain\Subscriber;
 
 use App\Exception\InputExceptions;
 use App\Responder\ResponderJson;

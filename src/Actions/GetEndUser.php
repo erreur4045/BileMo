@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\EndUsers\GetEndUserResolver;
+use App\Domain\EndUsers\GetEndUserResolver;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ class GetEndUser
 {
     /** @var ResponderJson */
         private $responder;
-        /** @var GetEndUserResolver */
+    /** @var GetEndUserResolver */
         private $resolver;
 
     /**
@@ -36,14 +36,11 @@ class GetEndUser
      * @param ResponderJson $responder
      * @param GetEndUserResolver $resolver
      */
-    public function __construct(
-        ResponderJson $responder,
-        GetEndUserResolver $resolver
-    ) {
+    public function __construct(ResponderJson $responder, GetEndUserResolver $resolver)
+    {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }
-
 
     /**
      * @param Request $request

@@ -9,7 +9,7 @@
  * FileName : GetPhonesDetailsResolver.php as GetPhonesDetailsResolver
  */
 
-namespace App\Actions\Domain\Phones;
+namespace App\Domain\Phones;
 
 use App\Repository\PhoneRepository;
 use Symfony\Component\HttpFoundation\Request;

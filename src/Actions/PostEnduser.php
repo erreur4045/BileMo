@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\EndUsers\AddEndUserResolver;
+use App\Domain\EndUsers\AddEndUserResolver;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +58,7 @@ class PostEnduser
     public function __invoke(Request $request)
     {
         $responder = $this->responder;
-        $inputdata = $this->resolver->resolve($request);
-        return $responder->response($inputdata, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        $inputData = $this->resolver->resolve($request);
+        return $responder->response($inputData, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 }

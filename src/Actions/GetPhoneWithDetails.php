@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\Phones\GetPhonesDetailsResolver;
+use App\Domain\Phones\GetPhonesDetailsResolver;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class GetPhoneWithDetails
 {
     /** @var ResponderJson */
         private $responder;
-        /** @var GetPhonesDetailsResolver */
+    /** @var GetPhonesDetailsResolver */
         private $resolver;
 
     /**
