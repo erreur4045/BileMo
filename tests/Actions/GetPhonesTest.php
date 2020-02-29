@@ -28,15 +28,15 @@ class GetPhonesTest extends AbstractTestCase
         static::assertEquals(200, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);
         static::assertIsArray($content,"OK" );
-        static::assertArrayHasKey('phones',$content);
+        static::assertArrayHasKey('Phone',$content);
         static::assertArrayHasKey('pagination',$content);
-        static::assertArrayHasKey('id',$content['phones'][0]);
-        static::assertArrayHasKey('name',$content['phones'][0]);
-        static::assertArrayHasKey('price',$content['phones'][0]);
-        static::assertArrayHasKey('width',$content['phones'][0]);
+        static::assertArrayHasKey('id',$content['Phone'][0]);
+        static::assertArrayHasKey('name',$content['Phone'][0]);
+        static::assertArrayHasKey('price',$content['Phone'][0]);
+        static::assertArrayHasKey('width',$content['Phone'][0]);
     }
 
-    public function testGetListPhonesOnExsistingPage()
+    public function testGetListPhonesOnExistingPage()
     {
         $this->clientAPI->followRedirects(true);
         $response = $this->request('GET', '/api/phones?page=1', 'darty', 'testpass');
@@ -44,7 +44,7 @@ class GetPhonesTest extends AbstractTestCase
         static::assertIsArray(json_decode($response->getContent(), true),"OK" );
     }
 
-    public function testGetListPhonesOnExsistingPage2()
+    public function testGetListPhonesOnExistingPage2()
     {
         $this->clientAPI->followRedirects(true);
         $response = $this->request('GET', '/api/phones?page=2', 'darty', 'testpass');
@@ -52,7 +52,7 @@ class GetPhonesTest extends AbstractTestCase
         static::assertIsArray(json_decode($response->getContent(), true),"OK" );
     }
 
-    public function testGetListPhonesOnNoneExsistingPage()
+    public function testGetListPhonesOnNoneExistingPage()
     {
         $this->clientAPI->followRedirects(true);
         $response = $this->request('GET', '/api/phones/?page=40', 'darty', 'testpass');
@@ -63,8 +63,15 @@ class GetPhonesTest extends AbstractTestCase
     public function testGetListPhonesWithInvalidParamForPaginate()
     {
         $this->clientAPI->followRedirects(true);
-        $response = $this->request('GET', '/api/phones/?page=dfgdfg40', 'darty', 'testpass');
-        static::assertEquals(404, $response->getStatusCode());
+        $response = $this->request('GET', '/api/phones/?page=40', 'darty', 'testpass');
+        static::assertEquals(400, $response->getStatusCode());
+    }
+
+    public function testGetListPhonesWithInvalidParamIntForPaginate()
+    {
+        $this->clientAPI->followRedirects(true);
+        $response = $this->request('GET', '/api/phones/?page=40sdfsdf', 'darty', 'testpass');
+        static::assertEquals(400, $response->getStatusCode());
     }
 
     public function testGetListPhonesWithoutAuth()
