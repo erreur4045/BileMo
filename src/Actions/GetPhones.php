@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\Phones\GetPhonesResolver;
+use App\Domain\Phones\GetPhonesResolver;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +25,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class GetPhones
 {
     /** @var ResponderJson */
-    private $responder;
+        private $responder;
     /** @var GetPhonesResolver */
-    private $resolver;
+        private $resolver;
 
     /**
      * GetPhones constructor.

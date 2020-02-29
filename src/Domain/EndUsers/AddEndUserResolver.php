@@ -9,7 +9,7 @@
  * FileName : AddEndUserResolver.php as AddEndUserResolver
  */
 
-namespace App\Actions\Domain\EndUsers;
+namespace App\Domain\EndUsers;
 
 use App\Entity\EndUser;
 use App\Exception\InputExceptions;

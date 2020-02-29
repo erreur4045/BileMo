@@ -9,7 +9,7 @@
  * FileName : DeleteEndUserResolver.php as DeleteEndUserResolver
  */
 
-namespace App\Actions\Domain\EndUsers;
+namespace App\Domain\EndUsers;
 
 use App\Entity\EndUser;
 use App\Repository\EndUserRepository;

@@ -4,6 +4,7 @@ namespace App\Serializer\Normalizer;
 
 use App\Entity\EndUser;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -17,18 +18,26 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     private $security;
     /** @var RequestStack */
     private $request;
+    /** @var RouterInterface */
+    private $router;
 
     /**
      * EndUserNormalizer constructor.
      * @param ObjectNormalizer $normalizer
      * @param Security $security
      * @param RequestStack $request
+     * @param RouterInterface $router
      */
-    public function __construct(ObjectNormalizer $normalizer, Security $security, RequestStack $request)
-    {
+    public function __construct(
+        ObjectNormalizer $normalizer,
+        Security $security,
+        RequestStack $request,
+        RouterInterface $router
+    ) {
         $this->normalizer = $normalizer;
         $this->security = $security;
         $this->request = $request;
+        $this->router = $router;
     }
 
 
@@ -40,9 +49,9 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
                 'email' => $object->getEmail(),
                 'links'  => [
                     'self' => $this->request->getCurrentRequest()->getRequestUri(),
-                    'posts' => '/api/users',
-                    'delete' => sprintf('/api/clients/%s/users/%s', $this->whereIs(), $object->getId()),
-                    'details' => sprintf('/api/users/%s', $object->getId())
+                    'posts' => $this->router->generate('post_user', ['client_id' => $this->whereIs()]),
+                    'delete' => $this->router->generate('delete_users', ['client_id' => $this->whereIs(), 'id' => $object->getId()]),
+                    'details' => $this->router->generate('get_user', ['client_id' => $this->whereIs(), 'id' => $object->getId()])
                 ]
             ];
         } else {
@@ -53,8 +62,8 @@ class EndUserNormalizer implements NormalizerInterface, CacheableSupportsMethodI
                 'fistname' => $object->getFistname(),
                 'links'  => [
                     'self' => $this->request->getCurrentRequest()->getRequestUri(),
-                    'posts' => sprintf('/api/clients/%s/users/', $this->whereIs()),
-                    'delete' => sprintf('/api/clients/%s/users/%s', $this->whereIs(), $object->getId())
+                    'posts' => $this->router->generate('post_user', ['client_id' => $this->whereIs()]),
+                    'delete' => $this->router->generate('delete_users', ['client_id' => $this->whereIs(), 'id' => $object->getId()]),
                 ]
             ];
         }

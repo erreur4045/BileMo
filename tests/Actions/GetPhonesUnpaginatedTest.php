@@ -49,7 +49,7 @@ class GetPhonesUnpaginatedTestTest extends AbstractTestCase
     {
         $this->clientAPI->followRedirects(true);
         $response = $this->request('GET', '/api/phones/?page=dfgdfg40', 'darty', 'testpass');
-        static::assertEquals(404, $response->getStatusCode());
+        static::assertEquals(400, $response->getStatusCode());
     }
 
     public function testGetListPhonesWithoutAuth()

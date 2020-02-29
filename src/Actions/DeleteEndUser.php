@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\EndUsers\DeleteEndUserResolver;
+use App\Domain\EndUsers\DeleteEndUserResolver;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,19 +26,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DeleteEndUser
 {
     /** @var ResponderJson */
-    private $responder;
+        private $responder;
     /** @var DeleteEndUserResolver */
-    private $resolver;
+        private $resolver;
 
     /**
      * DeleteEndUser constructor.
      * @param ResponderJson $responder
      * @param DeleteEndUserResolver $resolver
      */
-    public function __construct(
-        ResponderJson $responder,
-        DeleteEndUserResolver $resolver
-    ) {
+    public function __construct(ResponderJson $responder, DeleteEndUserResolver $resolver)
+    {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }

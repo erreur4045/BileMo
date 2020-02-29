@@ -9,7 +9,7 @@
  * FileName : GetEndUsersResolver.php as GetEndUsersResolver
  */
 
-namespace App\Actions\Domain\EndUsers;
+namespace App\Domain\EndUsers;
 
 use App\Repository\EndUserRepository;
 use Symfony\Component\HttpFoundation\Request;

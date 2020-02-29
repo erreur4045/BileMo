@@ -11,7 +11,7 @@
 
 namespace App\Actions;
 
-use App\Actions\Domain\EndUsers\GetEndUsersResolver;
+use App\Domain\EndUsers\GetEndUsersResolver;
 use App\Repository\EndUserRepository;
 use App\Responder\ResponderJson;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,13 +26,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GetEndUsers
 {
     /** @var EndUserRepository */
-    private $usersRepository;
+        private $usersRepository;
     /** @var ResponderJson */
-    private $responder;
+        private $responder;
     /** @var SerializerInterface */
-    private $serializer;
+        private $serializer;
     /** @var GetEndUsersResolver */
-    private $resolver;
+        private $resolver;
 
     /**
      * GetEndUsers constructor.
@@ -52,7 +52,6 @@ class GetEndUsers
         $this->serializer = $serializer;
         $this->resolver = $resolver;
     }
-
 
     public function __invoke(Request $request, UserInterface $client)
     {
