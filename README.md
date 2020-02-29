@@ -35,12 +35,12 @@ $ php bin/console doctrine:fixtures:load
 
 Run application in your favorite browser
 For test to retrieve a valid token call the url /login_check method POST with the following identifiers :
-```
+
 {
 	"username": "darty",
 	"password": "testpass"
 }
-```
+
 ----------------------------
 #General
 ###GET​
