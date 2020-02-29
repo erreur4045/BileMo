@@ -23,6 +23,6 @@ services:
         resource: '../src/Actions'
         tags: ['controller.service_arguments']
 
-    App\Actions\Domain\Subscriber\EventSubscriber:
+    App\Domain\Subscriber\EventSubscriber:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
