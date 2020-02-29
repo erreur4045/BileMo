@@ -18,33 +18,48 @@ Créez un web service exposant une API
 # General
 ### GET​
 /api​/doc.json 
+
 *Return documentation on json format*
 
 ### POST​
 /api​/login_check 
+
 *Allows to retrieve a valid token*
 
 # About Phones
 
 ### GET
-​/api​/phones *Return all phones*
+​/api​/phones 
+
+*Return all phones*
 
 ### GET
-​/api​/phones​/{id} *Find phone by ID*
+​/api​/phones​/{id} 
+
+*Find phone by ID*
 
 # About Users
 
 ### GET
-​/api​/clients​/{client_id}​/users *Allows you to retrieve all users.*
+​/api​/clients​/{client_id}​/users 
+
+*Allows you to retrieve all users.*
 
 ### POST
-​/api​/clients​/{client_id}​/users *Allows you to post a new user.*
+​/api​/clients​/{client_id}​/users 
+
+*Allows you to post a new user.*
 
 ### GET
-​/api​/clients​/{client_id}​/users​/{id} *Allows you to retrieve a single user.*
+​/api​/clients​/{client_id}​/users​/{id} 
+
+*Allows you to retrieve a single user.*
 
 ### DELETE
-​/api​/clients​/{client_id}​/users​/{id} *Allows you to delete a user.*
+​/api​/clients​/{client_id}​/users​/{id} 
+
+*Allows you to delete a user.*
+
 ## Install application:
 clone or download the repository into your environment. https://github.com/erreur4045/BileMo
 
