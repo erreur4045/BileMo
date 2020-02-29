@@ -42,8 +42,6 @@ For test to retrieve a valid token call the url /login_check method POST with th
 }
 ```
 
-doc /api/doc
-
 #General
 ###GET​
 /api​/doc.json 
