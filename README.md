@@ -90,7 +90,7 @@ JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
 JWT_PASSPHRASE=Your pass phrase used for generate key
 JWT_TOKEN_TTL=The validity time of the generated token expressed in seconds.(e.g 2000)
 ###< lexik/jwt-authentication-bundle ###
-```` 
+````
 For test to retrieve a valid token call the url /login_check method POST with the following identifiers :
 ```
 {
