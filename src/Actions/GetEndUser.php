@@ -22,7 +22,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class GetEnduserByClient
  * @package App\Actions
- * @Route(name="get_user", path="/api/clients/{client_id<\d+>}/users/{id<\d+>}", methods={"GET"})
+ * @Route(
+ *     name="get_user",
+ *     path="/api/clients/{client_id<\d+>}/users/{id<\d+>}",
+ *     methods={"GET"},
+ *     requirements={"client_id"="\d+", "id"="\d+"}
+ *     )
  */
 class GetEndUser
 {
@@ -36,20 +41,29 @@ class GetEndUser
      * @param ResponderJson $responder
      * @param GetEndUserResolver $resolver
      */
-    public function __construct(ResponderJson $responder, GetEndUserResolver $resolver)
-    {
+    public function __construct(
+        ResponderJson $responder,
+        GetEndUserResolver $resolver
+    ) {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }
 
     /**
      * @param Request $request
+     * @param UserInterface $client
      * @return JsonResponse
      */
-    public function __invoke(Request $request, UserInterface $client)
-    {
-        $responder = $this->responder;
+    public function __invoke(
+        Request $request,
+        UserInterface $client
+    ) {
         $endUser = $this->resolver->resolve($request, $client);
-        return $responder->response($endUser, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
+        return $this->responder->response(
+            $endUser,
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/json'],
+            true
+        );
     }
 }

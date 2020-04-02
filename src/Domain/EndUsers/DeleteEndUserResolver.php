@@ -11,7 +11,8 @@
 
 namespace App\Domain\EndUsers;
 
-use App\Entity\EndUser;
+use App\OwnTools\Back\Auth\AuthTools;
+use App\OwnTools\Back\URI\AttributesTools;
 use App\Repository\EndUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -39,6 +40,11 @@ class DeleteEndUserResolver
         private $validator;
     /** @var EndUserRepository */
         private $endUserRepo;
+    /** @var AttributesTools */
+        private $attributesTools;
+        /** @var AuthTools */
+        private $authTools;
+
     /**
      * DeleteEndUserResolver constructor.
      * @param SerializerInterface $serializer
@@ -46,20 +52,27 @@ class DeleteEndUserResolver
      * @param EntityManagerInterface $manager
      * @param ValidatorInterface $validator
      * @param EndUserRepository $endUserRepo
+     * @param AttributesTools $attributesTools
+     * @param AuthTools $authTools
      */
     public function __construct(
         SerializerInterface $serializer,
         TokenStorageInterface $storage,
         EntityManagerInterface $manager,
         ValidatorInterface $validator,
-        EndUserRepository $endUserRepo
+        EndUserRepository $endUserRepo,
+        AttributesTools $attributesTools,
+        AuthTools $authTools
     ) {
         $this->serializer = $serializer;
         $this->storage = $storage;
         $this->manager = $manager;
         $this->validator = $validator;
         $this->endUserRepo = $endUserRepo;
+        $this->attributesTools = $attributesTools;
+        $this->authTools = $authTools;
     }
+
 
     /**
      * @param Request $request
@@ -71,8 +84,8 @@ class DeleteEndUserResolver
         UserInterface $client
     ) {
         if (
-            $this->isUserNotConnected()
-            or $this->isClientIdConsistent($request, $client)
+            $this->authTools->isUserNotConnected()
+            or $this->attributesTools->isClientLegitimate($request, $client)
         ) {
             throw new AccessDeniedHttpException(
                 'You can\'t delete this user',
@@ -90,26 +103,6 @@ class DeleteEndUserResolver
             $this->manager->remove($endUser);
             $this->manager->flush();
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isUserNotConnected(): bool
-    {
-        return $this->storage->getToken()->getUser() === null;
-    }
-
-    /**
-     * @param Request $request
-     * @param UserInterface $client
-     * @return bool
-     */
-    private function isClientIdConsistent(
-        Request $request,
-        UserInterface $client
-    ): bool {
-        return (int)$request->get('client_id') != $client->getId();
     }
 
     /**

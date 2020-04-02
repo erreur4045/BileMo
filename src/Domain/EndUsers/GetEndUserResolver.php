@@ -11,6 +11,7 @@
 
 namespace App\Domain\EndUsers;
 
+use App\OwnTools\Back\URI\AttributesTools;
 use App\Repository\EndUserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,21 +26,32 @@ class GetEndUserResolver
     private $endUserRepository;
     /** @var SerializerInterface */
     private $serializer;
+    /** @var AttributesTools */
+    private $attributesTools;
+
     /**
      * GetEndUserResolver constructor.
-     * @param EndUserRepository $enduserRepository
+     * @param EndUserRepository $endUserRepository
      * @param SerializerInterface $serializer
+     * @param AttributesTools $attributesTools
      */
-    public function __construct(EndUserRepository $enduserRepository, SerializerInterface $serializer)
-    {
-        $this->endUserRepository = $enduserRepository;
+    public function __construct(
+        EndUserRepository $endUserRepository,
+        SerializerInterface $serializer,
+        AttributesTools $attributesTools
+    ) {
+        $this->endUserRepository = $endUserRepository;
         $this->serializer = $serializer;
+        $this->attributesTools = $attributesTools;
     }
 
-    public function resolve(Request $request, UserInterface $client)
-    {
-        $endUser = $this->endUserRepository->find(['id' => $request->attributes->get('id')]);
-        if ($endUser == null) {
+    public function resolve(
+        Request $request,
+        UserInterface $client
+    ) {
+        $requestId = $request->attributes->get('id');
+        $endUser = $this->endUserRepository->find(['id' => $requestId]);
+        if (!$endUser) {
             throw new NotFoundHttpException(
                 'User was not found, check your request',
                 null,
@@ -48,13 +60,8 @@ class GetEndUserResolver
             );
         }
         if (
-            $this->endUserRepository->findOneBy(
-                [
-                    'id' => $request->attributes->get('id'),
-                    'client' => $request->attributes->get('client_id')
-                ]
-            ) == false
-            or $client->getId() != (int)$request->attributes->get('client_id')
+            $this->isEndUserNotAssociatedToClient($request, $requestId)
+            or $this->attributesTools->isClientLegitimate($request, $client)
         ) {
             throw new AccessDeniedHttpException(
                 'You don\'t have the permissions for this resource.',
@@ -62,7 +69,27 @@ class GetEndUserResolver
                 Response::HTTP_UNAUTHORIZED
             );
         }
-        $endUserSerialised = $this->serializer->normalize($endUser, 'json', ['groups' => 'user_details_route']);
-        return $endUserSerialised;
+        return $this->serializer->normalize(
+            $endUser,
+            'json',
+            ['groups' => 'user_details_route']
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param $requestId
+     * @return bool
+     */
+    private function isEndUserNotAssociatedToClient(
+        Request $request,
+        $requestId
+    ): bool {
+        return $this->endUserRepository->findOneBy(
+                [
+                    'id' => $requestId,
+                    'client' => $request->attributes->get('client_id')
+                ]
+            ) == false;
     }
 }
