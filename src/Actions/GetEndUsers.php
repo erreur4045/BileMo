@@ -21,42 +21,44 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- *@Route(name="get_users", path="/api/clients/{client_id<\d+>}/users", methods={"GET"})
+ *@Route(
+ *     name="get_users",
+ *     path="/api/clients/{client_id<\d+>}/users",
+ *     methods={"GET"},
+ *     requirements={"client_id"="\d+"}
+ *     )
  */
 class GetEndUsers
 {
-    /** @var EndUserRepository */
-        private $usersRepository;
     /** @var ResponderJson */
         private $responder;
-    /** @var SerializerInterface */
-        private $serializer;
     /** @var GetEndUsersResolver */
         private $resolver;
 
     /**
      * GetEndUsers constructor.
-     * @param EndUserRepository $usersRepository
      * @param ResponderJson $responder
-     * @param SerializerInterface $serializer
      * @param GetEndUsersResolver $resolver
      */
     public function __construct(
-        EndUserRepository $usersRepository,
         ResponderJson $responder,
-        SerializerInterface $serializer,
         GetEndUsersResolver $resolver
     ) {
-        $this->usersRepository = $usersRepository;
         $this->responder = $responder;
-        $this->serializer = $serializer;
         $this->resolver = $resolver;
     }
 
-    public function __invoke(Request $request, UserInterface $client)
+    public function __invoke(
+        Request $request,
+        UserInterface $client
+    )
     {
-        $responder = $this->responder;
         $usersNormalized = $this->resolver->resolve($request, $client);
-        return $responder->response($usersNormalized, Response::HTTP_OK, ['Content-Type' => 'application/json'], true);
+        return $this->responder->response(
+            $usersNormalized,
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/json'],
+            true
+        );
     }
 }

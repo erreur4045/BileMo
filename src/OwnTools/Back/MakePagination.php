@@ -30,7 +30,11 @@ class MakePagination
      * @param PhoneRepository $phoneRepository
      * @param RouterInterface $router
      */
-    public function __construct(RequestStack $request, PhoneRepository $phoneRepository, RouterInterface $router)
+    public function __construct(
+        RequestStack $request,
+        PhoneRepository $phoneRepository,
+        RouterInterface $router
+    )
     {
         $this->request = $request;
         $this->phoneRepository = $phoneRepository;

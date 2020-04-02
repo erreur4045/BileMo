@@ -11,8 +11,11 @@
 
 namespace App\Domain\EndUsers;
 
+use App\Entity\EndUser;
 use App\OwnTools\Back\CheckParams;
 use App\OwnTools\Back\MakePagination;
+use App\OwnTools\Back\Pagination\PaginationTools;
+use App\OwnTools\Back\URI\AttributesTools;
 use App\Repository\EndUserRepository;
 use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +33,10 @@ class GetEndUsersResolver
         private $paginator;
     /** @var CheckParams */
         private $checkParams;
+    /** @var AttributesTools */
+        private $attributesTools;
+    /** @var PaginationTools */
+        private $paginationTools;
 
     /**
      * GetEndUsersResolver constructor.
@@ -37,24 +44,29 @@ class GetEndUsersResolver
      * @param SerializerInterface $serializer
      * @param MakePagination $paginator
      * @param CheckParams $checkParams
+     * @param AttributesTools $attributesTools
+     * @param PaginationTools $paginationTools
      */
     public function __construct(
         EndUserRepository $endUserRepository,
         SerializerInterface $serializer,
         MakePagination $paginator,
-        CheckParams $checkParams
+        CheckParams $checkParams,
+        AttributesTools $attributesTools,
+        PaginationTools $paginationTools
     ) {
         $this->endUserRepository = $endUserRepository;
         $this->serializer = $serializer;
         $this->paginator = $paginator;
         $this->checkParams = $checkParams;
+        $this->attributesTools = $attributesTools;
+        $this->paginationTools = $paginationTools;
     }
-
 
     public function resolve(Request $request, UserInterface $client)
     {
         $clientId = (int)$request->attributes->get('client_id');
-        if ((int)$client->getId() != $clientId) {
+        if ($this->attributesTools->isClientLegitimate($request, $client)) {
             throw new ForbiddenOverwriteException(
                 'You can\'t access these resources.',
                 Response::HTTP_UNAUTHORIZED,
@@ -62,11 +74,46 @@ class GetEndUsersResolver
             );
         }
         $page = $request->query->get('page');
-        $nbEndUsers = $this->endUserRepository->countEndUsers($clientId);
-        $needPaginate = ceil($nbEndUsers / MakePagination::LIMIT_PER_PAGE) > 1 ? true : false;
-        $this->checkParams->isValid($page, $nbEndUsers);
-        $needPaginate == true ? $phones = $this->paginator->paginate($page, $nbEndUsers, $this->endUserRepository, $request->attributes->getInt('client_id')) : $phones = $this->endUserRepository->findBy([], [], MakePagination::LIMIT_PER_PAGE);
-        $usersNormalized =  $this->serializer->normalize($phones, 'json', ['groups' => 'list_users']);
-        return $usersNormalized;
+        $endUsersCount = $this->endUserRepository->countEndUsers($clientId);
+        $this->paginationTools->filterUnconsistentPageNumber($page, $endUsersCount);
+        $currentPageEndUsers = ($this->paginationTools->isPaginationNeeded($endUsersCount)) ?
+            $this->getCurrentPageEndUsersAfterPagination($request, $page, $endUsersCount) :
+            $this->getEndUsers();
+        return $this->serializer->normalize(
+            $currentPageEndUsers,
+            'json',
+            ['groups' => 'list_users']
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param $page
+     * @param $nbEndUsers
+     * @return mixed
+     */
+    private function getCurrentPageEndUsersAfterPagination(
+        Request $request,
+        $page,
+        $nbEndUsers
+    ) {
+        return $this->paginator->paginate(
+            $page,
+            $nbEndUsers,
+            $this->endUserRepository,
+            $request->attributes->getInt('client_id')
+        );
+    }
+
+    /**
+     * @return EndUser[]
+     */
+    private function getEndUsers(): array
+    {
+        return $this->endUserRepository->findBy(
+            [],
+            [],
+            MakePagination::LIMIT_PER_PAGE
+        );
     }
 }
