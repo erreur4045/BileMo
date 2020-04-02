@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddEndUserResolver
+class AddEndUserResolver implements AddEndUserResolverInterface
 {
 
     /** @var SerializerInterface */

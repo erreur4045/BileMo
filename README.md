@@ -82,7 +82,7 @@ $ mkdir -p config/jwt
 $ openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
 $ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
 ````
-#### According to the lexik_jwt_authentication.yaml file, you have to fill in the following fields in your .env file at the root of the folder.
+#### According to the lexik_jwt_authentication.yaml file,you have to fill in the following fields in your .env file at the root of the folder.
 ````
 ###> lexik/jwt-authentication-bundle ###
 JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
@@ -92,6 +92,7 @@ JWT_TOKEN_TTL=The validity time of the generated token expressed in seconds.(e.g
 ###< lexik/jwt-authentication-bundle ###
 ````
 For test to retrieve a valid token call the url /login_check method POST with the following identifiers :
+
 ```
 {
 	"username": "darty",

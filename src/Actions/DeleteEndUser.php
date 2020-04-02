@@ -13,8 +13,11 @@ namespace App\Actions;
 
 use App\Domain\EndUsers\DeleteEndUserResolver;
 use App\Responder\ResponderJson;
+use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -35,16 +38,24 @@ class DeleteEndUser
      * @param ResponderJson $responder
      * @param DeleteEndUserResolver $resolver
      */
-    public function __construct(ResponderJson $responder, DeleteEndUserResolver $resolver)
+    public function __construct(
+        ResponderJson $responder,
+        DeleteEndUserResolver $resolver
+    )
     {
         $this->responder = $responder;
         $this->resolver = $resolver;
     }
 
-    public function __invoke(Request $request, UserInterface $client)
-    {
+    public function __invoke(
+        Request $request,
+        UserInterface $client
+    ): JsonResponse {
         $responder = $this->responder;
         $this->resolver->resolve($request, $client);
-        return $responder->response(null, Response::HTTP_NO_CONTENT, ['Content-Type' => 'application/json']);
+        return $responder->response(
+            null,
+            Response::HTTP_NO_CONTENT
+        );
     }
 }

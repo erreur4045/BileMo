@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeleteEndUserResolver
 {
     /** @var SerializerInterface */
-    private $serializer;
+        private $serializer;
     /** @var TokenStorageInterface */
         private $storage;
     /** @var EntityManagerInterface */
@@ -66,15 +66,59 @@ class DeleteEndUserResolver
      * @param UserInterface $client
      * @throws Exception
      */
-    public function resolve(Request $request, UserInterface $client)
-    {
-        if ($this->storage->getToken()->getUser() == null or (int)$request->get('client_id') != $client->getId()) {
-            throw new AccessDeniedHttpException('You can\'t delete this user', null, Response::HTTP_UNAUTHORIZED);
-        } elseif ($this->manager->getRepository(EndUser::class)->find($request->get('id')) == null) {
-            throw new Exception('User doesn\'t exist', Response::HTTP_NOT_FOUND);
+    public function resolve(
+        Request $request,
+        UserInterface $client
+    ) {
+        if (
+            $this->isUserNotConnected()
+            or $this->isClientIdConsistent($request, $client)
+        ) {
+            throw new AccessDeniedHttpException(
+                'You can\'t delete this user',
+                null,
+                Response::HTTP_UNAUTHORIZED
+            );
+        } elseif ($this->isNotEndUser($request)) {
+            throw new Exception(
+                'User doesn\'t exist',
+                Response::HTTP_NOT_FOUND
+            );
         } else {
-            $this->manager->remove($this->manager->getRepository(EndUser::class)->find($request->get('id')));
+            $requestId = $request->get('id');
+            $endUser = $this->endUserRepo->find($requestId);
+            $this->manager->remove($endUser);
             $this->manager->flush();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isUserNotConnected(): bool
+    {
+        return $this->storage->getToken()->getUser() === null;
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $client
+     * @return bool
+     */
+    private function isClientIdConsistent(
+        Request $request,
+        UserInterface $client
+    ): bool {
+        return (int)$request->get('client_id') != $client->getId();
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    private function isNotEndUser(Request $request): bool
+    {
+        $requestId = $request->get('id');
+        return $this->endUserRepo->find($requestId) === null;
     }
 }
